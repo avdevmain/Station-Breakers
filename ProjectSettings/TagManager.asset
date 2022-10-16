@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Head
   - Body
+  - Projectile
   layers:
   - Default
   - TransparentFX

@@ -7,6 +7,8 @@ TagManager:
   - Head
   - Body
   - Projectile
+  - Bullet
+  - Interactable
   layers:
   - Default
   - TransparentFX

@@ -105,9 +105,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Grenade",
+                    "name": "GrenadeExplode",
                     "type": "Button",
                     "id": "6599eedb-82d7-4a2c-884c-402a3beae749",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "GrenadeImplode",
+                    "type": "Button",
+                    "id": "ceab11b4-d379-40c5-aaee-dde2cad3f90d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -408,7 +417,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grenade",
+                    "action": "GrenadeExplode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -419,7 +428,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grenade",
+                    "action": "GrenadeExplode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "990a9781-6ce1-4740-bd37-51dfdab4d670",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GrenadeImplode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9bfdad2-6e8e-47e2-8b79-38af0b5a9e2e",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GrenadeImplode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

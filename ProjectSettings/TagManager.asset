@@ -9,6 +9,7 @@ TagManager:
   - Projectile
   - Bullet
   - Interactable
+  - Spawn
   layers:
   - Default
   - TransparentFX

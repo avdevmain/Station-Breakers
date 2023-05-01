@@ -19,7 +19,7 @@ namespace HutongGames.PlayMaker.Actions
 		[RequiredField]
 		[UIHint(UIHint.Variable)]
 		[Tooltip("The time source type")]
-		[ObjectType(typeof(VideoTimeUpdateMode))]
+		[ObjectType(typeof(VideoTimeSource))]
 		public FsmEnum timeSource;
 
 		[Tooltip("Repeat every frame.")]
@@ -58,7 +58,7 @@ namespace HutongGames.PlayMaker.Actions
 		{
 			if (_vp != null)
 			{
-				timeSource.Value = _vp.timeUpdateMode;
+				timeSource.Value = _vp.timeSource;
 			}
 		}
 			

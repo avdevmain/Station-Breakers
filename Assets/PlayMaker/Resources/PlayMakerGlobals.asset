@@ -75,3 +75,10 @@ MonoBehaviour:
   - PHOTON / ON REGION LIST RECEIVED
   - PHOTON / ON WEBRPC RESPONSE
   - PHOTON / ON PHOTON INSTANTIATE
+  - shoot
+  - throw_implo
+  - throw_explo
+  - objIsDead
+  - getDamage
+  - die
+  - hitByProj

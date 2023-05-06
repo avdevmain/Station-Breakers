@@ -83,7 +83,7 @@ Light:
     serializedVersion: 2
     m_Bits: 64
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -254,16 +254,26 @@ MonoBehaviour:
         colorIndex: 0
       actionData:
         actionNames:
+        - HutongGames.PlayMaker.Actions.SetLightRange
         - HutongGames.PlayMaker.Actions.Wait
         customNames:
         - 
-        actionEnabled: 01
-        actionIsOpen: 01
-        actionStartIndex: 00000000
-        actionHashCodes: 48c01101
+        - 
+        actionEnabled: 0101
+        actionIsOpen: 0101
+        actionStartIndex: 0000000003000000
+        actionHashCodes: 32d5940248c01101
         unityObjectParams: []
         fsmGameObjectParams: []
-        fsmOwnerDefaultParams: []
+        fsmOwnerDefaultParams:
+        - ownerOption: 1
+          gameObject:
+            useVariable: 0
+            name: 
+            tooltip: 
+            showInInspector: 0
+            networkSync: 0
+            value: {fileID: 4887782830233882847}
         animationCurveParams: []
         functionCallParams: []
         fsmTemplateControlParams: []
@@ -276,6 +286,12 @@ MonoBehaviour:
         fsmArrayParams: []
         fsmEnumParams: []
         fsmFloatParams:
+        - useVariable: 1
+          name: explo radius
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: 15
         - useVariable: 1
           name: activate timer
           tooltip: 
@@ -291,18 +307,21 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - FINISHED
-        byteData: 00
+        byteData: 0000
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 0f0000001700000001000000
+        paramDataType: 140000000f000000010000000f0000001700000001000000
         paramName:
+        - gameObject
+        - lightRange
+        - everyFrame
         - time
         - finishEvent
         - realTime
-        paramDataPos: 000000000000000000000000
-        paramByteDataSize: 000000000000000001000000
+        paramDataPos: 000000000000000000000000010000000000000001000000
+        paramByteDataSize: 000000000000000001000000000000000000000001000000
     - name: Create FX
       description: 
       colorIndex: 0
@@ -352,7 +371,7 @@ MonoBehaviour:
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: {fileID: 3117297705738339872, guid: 41048683f2fa0c4419344eceeb0ba822, type: 3}
+          value: {fileID: 4525001117107392396, guid: aa9a28ec1f585d048b0de0506c0f6c65, type: 3}
         - useVariable: 0
           name: 
           tooltip: 
@@ -637,7 +656,7 @@ MonoBehaviour:
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: 10
+          value: 15
         - useVariable: 0
           name: 
           tooltip: 
@@ -808,7 +827,7 @@ MonoBehaviour:
         - 
         - 
         actionEnabled: 010101
-        actionIsOpen: 000000
+        actionIsOpen: 000001
         actionStartIndex: 00000000050000000c000000
         actionHashCodes: 6ba59301ed71110204d1d501
         unityObjectParams: []
@@ -838,7 +857,7 @@ MonoBehaviour:
             ownerOption: 1
             gameObject:
               useVariable: 1
-              name: goHit
+              name: singleObj
               tooltip: 
               showInInspector: 0
               networkSync: 0
@@ -921,13 +940,13 @@ MonoBehaviour:
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: 100
+          value: -100
         - useVariable: 1
           name: explo radius
           tooltip: 
           showInInspector: 0
           networkSync: 0
-          value: 10
+          value: 15
         - useVariable: 0
           name: 
           tooltip: 
@@ -1302,7 +1321,7 @@ MonoBehaviour:
     manualUpdate: 0
     outVariableIndices: 
     keepDelayedEventsOnStateExit: 0
-    preprocessed: 1
+    preprocessed: 0
     ExposedEvents: []
     OutputEvents: []
     RestartOnEnable: 0
@@ -1330,7 +1349,7 @@ MonoBehaviour:
     handleJointBreak: 0
     handleJointBreak2D: 0
     handleOnGUI: 0
-    handleFixedUpdate: 1
+    handleFixedUpdate: 0
     handleLateUpdate: 0
     handleApplicationEvents: 0
     handleUiEvents: 0

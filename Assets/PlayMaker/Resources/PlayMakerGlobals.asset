@@ -82,3 +82,4 @@ MonoBehaviour:
   - getDamage
   - die
   - hitByProj
+  - anim

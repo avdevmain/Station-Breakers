@@ -18,9 +18,9 @@ GameObject:
   - component: {fileID: 9180968717973173410}
   - component: {fileID: 4846814204553085170}
   - component: {fileID: 5193834076462070613}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Battery_explosive_Physics
-  m_TagString: Untagged
+  m_TagString: Grabbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1127,7 +1127,7 @@ MonoBehaviour:
     manualUpdate: 0
     outVariableIndices: 
     keepDelayedEventsOnStateExit: 0
-    preprocessed: 0
+    preprocessed: 1
     ExposedEvents: []
     OutputEvents: []
     RestartOnEnable: 0
@@ -1155,7 +1155,7 @@ MonoBehaviour:
     handleJointBreak: 0
     handleJointBreak2D: 0
     handleOnGUI: 0
-    handleFixedUpdate: 0
+    handleFixedUpdate: 1
     handleLateUpdate: 0
     handleApplicationEvents: 0
     handleUiEvents: 0
@@ -1189,7 +1189,7 @@ GameObject:
   - component: {fileID: 2754949539234447254}
   - component: {fileID: 5123211497443402810}
   - component: {fileID: 6868335374018361475}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: SM_Prop_Crate_07_Lid_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1272,7 +1272,7 @@ GameObject:
   - component: {fileID: 5695353218065967123}
   - component: {fileID: 6557902538138200164}
   - component: {fileID: 4886122330258152481}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: SM_Prop_Crate_07_Lid_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

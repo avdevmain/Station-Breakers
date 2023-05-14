@@ -83,3 +83,4 @@ MonoBehaviour:
   - die
   - hitByProj
   - anim
+  - interactedWith

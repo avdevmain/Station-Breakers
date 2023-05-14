@@ -231,51 +231,24 @@ public partial class PlayMakerUtils {
 
     public static bool CreateIfNeededGlobalEvent(string globalEventName)
     {
-	    bool result = false;
-	    
-	    /*
-	    if (PlayMakerGlobals.Instance != null)
-	    {
-		    if (!PlayMakerGlobals.Instance.Events.Contains(globalEventName))
-		    {
-			    Debug.Log("Adding event to PlayMakerGlobals:" + globalEventName);
-			    PlayMakerGlobals.Instance.AddEvent(globalEventName);
-		    }
-	    }
+        FsmEvent _event = FsmEvent.GetFsmEvent(globalEventName);
 
-	    return result;
-	    */
-	
-	    FsmEvent _event = FsmEvent.GetFsmEvent(globalEventName);
+        bool result = false;
 
-	    if (_event == null)
-	    {
-		    Debug.Log("Adding event to FsmEvent:"+globalEventName);
-		    _event = new FsmEvent(globalEventName) { IsGlobal = true };
-		    FsmEvent.AddFsmEvent(_event);
-	    }
-	    else
-	    {
-//		    Debug.Log("event already defined as an FsmEvent:"+globalEventName);
-	    }
-	 
         if (!FsmEvent.IsEventGlobal(globalEventName))
         {
-	        if (!FsmEvent.globalEvents.Contains(globalEventName))
+            if (_event == null)
             {
-	            Debug.Log("adding global event to  FsmEvent.globalEvents:"+globalEventName);
-	            FsmEvent.globalEvents.Add(globalEventName);
+                _event = new FsmEvent(globalEventName) { IsGlobal = true };
+                FsmEvent.AddFsmEvent(_event);
+                if (!FsmEvent.globalEvents.Contains(globalEventName))
+                {
+                    FsmEvent.globalEvents.Add(globalEventName);
+                }
             }
-            else
-            {
-	            Debug.Log("event already defined in FsmEvent.globalEvents:"+globalEventName);
-            }
-            
+
             result = true;
-        }
-        else
-        {
-	        Debug.Log("event already global:"+globalEventName);
+
         }
 
         return result;

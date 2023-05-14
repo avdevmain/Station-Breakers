@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5089338963071105515}
   - component: {fileID: 2225883789615858722}
   - component: {fileID: 7140791457136248485}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Prop_Crate_Lid_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,9 +100,9 @@ GameObject:
   - component: {fileID: 2254687646644929201}
   - component: {fileID: 3914518539402150326}
   - component: {fileID: 1363966951231712364}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Crate_Physics
-  m_TagString: Interactable
+  m_TagString: Grabbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

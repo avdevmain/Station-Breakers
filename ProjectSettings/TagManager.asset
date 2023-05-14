@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Interactable
   - Spawn
+  - Grabbable
   layers:
   - Default
   - TransparentFX
@@ -17,10 +18,10 @@ TagManager:
   - Post processing
   - Water
   - UI
-  - Collideable
-  - 
-  - 
-  - 
+  - Environment
+  - Hands
+  - Helmet
+  - Objects
   - 
   - 
   - 

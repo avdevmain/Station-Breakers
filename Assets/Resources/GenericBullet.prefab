@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9045225308146185860}
   - component: {fileID: 1965197206275147566}
   - component: {fileID: 5009060325317459165}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4774,7 +4774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8011358316754622137}
   - component: {fileID: 854615478227574632}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4869,7 +4869,7 @@ GameObject:
   - component: {fileID: 3414583455328481292}
   - component: {fileID: 5550189504303003837}
   - component: {fileID: 188270949357899582}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9634,7 +9634,7 @@ GameObject:
   - component: {fileID: 259474568444872243}
   - component: {fileID: 2356222444495448999}
   - component: {fileID: 1071354511177486254}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Red VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14479,7 +14479,7 @@ GameObject:
   - component: {fileID: 8317741731177753472}
   - component: {fileID: 4667880682045235555}
   - component: {fileID: 276341703879001898}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: StretchyBit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19217,7 +19217,7 @@ GameObject:
   - component: {fileID: 5060641957837748704}
   - component: {fileID: 2720625401225465884}
   - component: {fileID: 5778655372843794419}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Blue VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24062,7 +24062,7 @@ GameObject:
   - component: {fileID: 8820536166396429322}
   - component: {fileID: 4099565952447213454}
   - component: {fileID: 4144427136726700745}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: StretchyBit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28803,7 +28803,7 @@ GameObject:
   - component: {fileID: 5117523912798883689}
   - component: {fileID: 1595918576614586895}
   - component: {fileID: 4775698499045303563}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: GenericBullet
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -29787,7 +29787,7 @@ MonoBehaviour:
     manualUpdate: 0
     outVariableIndices: 
     keepDelayedEventsOnStateExit: 0
-    preprocessed: 0
+    preprocessed: 1
     ExposedEvents: []
     OutputEvents: []
     RestartOnEnable: 0
@@ -29804,10 +29804,10 @@ MonoBehaviour:
     handleCollisionEnter2D: 0
     handleCollisionExit2D: 0
     handleCollisionStay2D: 0
-    handleTriggerEnter: 0
+    handleTriggerEnter: 1
     handleTriggerExit: 0
     handleTriggerStay: 0
-    handleCollisionEnter: 0
+    handleCollisionEnter: 1
     handleCollisionExit: 0
     handleCollisionStay: 0
     handleParticleCollision: 0
@@ -29815,7 +29815,7 @@ MonoBehaviour:
     handleJointBreak: 0
     handleJointBreak2D: 0
     handleOnGUI: 0
-    handleFixedUpdate: 0
+    handleFixedUpdate: 1
     handleLateUpdate: 0
     handleApplicationEvents: 0
     handleUiEvents: 0
@@ -29905,7 +29905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1388174717831486834}
   - component: {fileID: 1379552129550280859}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

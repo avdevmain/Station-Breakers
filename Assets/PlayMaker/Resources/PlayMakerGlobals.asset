@@ -31,4 +31,7 @@ MonoBehaviour:
     categories:
     - 
     variableCategoryIDs: 
-  events: []
+  events:
+  - grabbed
+  - ungrabbed
+  - overheated

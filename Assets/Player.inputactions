@@ -96,6 +96,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Throw",
+                    "type": "Button",
+                    "id": "71ff104f-d1b3-4655-82b0-ad383e8acf00",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Melee",
                     "type": "Button",
                     "id": "2fa0e8ca-0d8c-4b12-b958-441fb234ec82",
@@ -471,6 +480,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c8757d62-e4d8-4ed3-8b84-bc0f66e3d328",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throw",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

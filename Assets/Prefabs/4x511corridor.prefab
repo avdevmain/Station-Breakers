@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 38757987842744932}
   m_Layer: 0
-  m_Name: 511corridor
+  m_Name: 4x511corridor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

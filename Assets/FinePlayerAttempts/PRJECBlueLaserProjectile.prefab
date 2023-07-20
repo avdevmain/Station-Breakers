@@ -5156,7 +5156,7 @@ MonoBehaviour:
         - 
         - 
         actionEnabled: 0101010101010101
-        actionIsOpen: 0000000000000000
+        actionIsOpen: 0000000001000000
         actionStartIndex: 0000000006000000090000000e000000160000001c000000220000002b000000
         actionHashCodes: 33f06100bbee8e0387ff57016ab449046053230160532301979e4104230cc800
         unityObjectParams: []
@@ -5593,7 +5593,7 @@ MonoBehaviour:
     manualUpdate: 0
     outVariableIndices: 
     keepDelayedEventsOnStateExit: 0
-    preprocessed: 1
+    preprocessed: 0
     ExposedEvents: []
     OutputEvents: []
     RestartOnEnable: 1
@@ -5613,7 +5613,7 @@ MonoBehaviour:
     handleTriggerEnter: 0
     handleTriggerExit: 0
     handleTriggerStay: 0
-    handleCollisionEnter: 1
+    handleCollisionEnter: 0
     handleCollisionExit: 0
     handleCollisionStay: 0
     handleParticleCollision: 0
@@ -5621,7 +5621,7 @@ MonoBehaviour:
     handleJointBreak: 0
     handleJointBreak2D: 0
     handleOnGUI: 0
-    handleFixedUpdate: 1
+    handleFixedUpdate: 0
     handleLateUpdate: 0
     handleApplicationEvents: 0
     handleUiEvents: 0

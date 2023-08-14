@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 477684}
   - component: {fileID: 10862818}
   - component: {fileID: 6602005225378116366}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 476582}
   - component: {fileID: 19862452}
   - component: {fileID: 19907392}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: StretchyBit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4863,7 +4863,7 @@ GameObject:
   - component: {fileID: 404564}
   - component: {fileID: 19851972}
   - component: {fileID: 19954174}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9631,7 +9631,7 @@ GameObject:
   - component: {fileID: 6869167430466332607}
   - component: {fileID: 7822914709480368829}
   - component: {fileID: 2990256221866482320}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: BulletRed
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -15264,7 +15264,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6035219180047176815}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: projector
   m_TagString: Untagged
   m_Icon: {fileID: 0}

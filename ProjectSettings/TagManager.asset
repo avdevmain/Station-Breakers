@@ -4,27 +4,24 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Head
-  - Body
-  - Projectile
-  - Bullet
-  - Interactable
-  - Spawn
-  - Grabbable
+  - grabbable
+  - interactable
+  - grab+interact
+  - Missile
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Post processing
+  - Player
   - Water
   - UI
-  - Environment
-  - Hands
-  - Helmet
   - Objects
-  - Movecollisions
-  - Player
+  - MoveCollider
   - Projectile
+  - Enemy
+  - 
+  - 
+  - 
   - 
   - 
   - 

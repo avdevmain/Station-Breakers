@@ -652,23 +652,37 @@ MonoBehaviour:
     pivotPoint: {fileID: 9114370651732886887}
     aimPoint: {fileID: 3929461778726672608}
     leftHandTarget: {fileID: 2589768430931831945}
+    leftHandHint: {fileID: 0}
+    rightHandHint: {fileID: 0}
   aimOffsetTable: {fileID: 11400000, guid: 57854195cc9bbd043aea341cd3a5be06, type: 2}
   recoilData: {fileID: 11400000, guid: 701f03450b087154cb4b65151dff9f83, type: 2}
   fireMode: 0
   fireRate: 750
+  ammoInMag: 10
+  autoRecharging: 0
+  autoRechargeDelay: 1
+  ammoPerShot: 0
   burstAmount: 1
   overlayPose: {fileID: 11400000, guid: a07f2c65d7ebbef46a219bafb789c09c, type: 2}
   weaponBone:
     position: {x: 0.2551, y: 1.3556, z: 0.5485}
     rotation: {x: 0.0062622586, y: -0.027225837, z: -0.35432982, w: 0.9347031}
+  weaponSprite: {fileID: 0}
   physRecoilPower: 25
   physRecoilPoint: {fileID: 1459378194}
+  ammoDisplay: {fileID: 0}
+  ch: {fileID: 0}
+  chMinSize: 0
+  chMaxSize: 0
+  chIncrement: 0
+  chReduceSpeed: 0
   reloadClip: {fileID: 11400000, guid: 36470a5ebcec4f74a83e9664c5927c0b, type: 2}
   grenadeClip: {fileID: 11400000, guid: 8c67bf649c292b144b8b42c0942acb48, type: 2}
   overlayType: 2
   stagedReloadSegment: 0
   scopes:
   - {fileID: 3929461778726672608}
+  _currentAmmo: 0
 --- !u!114 &839484111
 MonoBehaviour:
   m_ObjectHideFlags: 0

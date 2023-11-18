@@ -6,12 +6,14 @@ using Kinemation.FPSFramework.Runtime.FPSAnimator;
 using Kinemation.FPSFramework.Runtime.Layers;
 using Kinemation.FPSFramework.Runtime.Recoil;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
-using PlayMaker;
-using TMPro;
+
+using UnityEngine.InputSystem;
+using Obscure.SDC;
 
 namespace Demo.Scripts.Runtime
 {
@@ -82,6 +84,99 @@ namespace Demo.Scripts.Runtime
         [SerializeField] [HideInInspector] private SlotLayer slotLayer;
         // Animation Layers
 
+        [Tab("HUD")] 
+        [Header("Task")]
+        [SerializeField] private GameObject obj_task;
+        [SerializeField] private Image sprite_task;
+        [SerializeField] private TMP_Text text_task_name;
+        [SerializeField] private TMP_Text text_task_details;
+        
+        [Header("Hint_1")]
+        [SerializeField] private GameObject obj_hint1;
+        [SerializeField] private Image sprite_hint1;
+        [SerializeField] private TMP_Text text_hint1_button;
+        [SerializeField] private TMP_Text text_hint1_details;
+        [SerializeField] private RectTransform rt_hint1_cooldown;
+        
+        [Header("Hint_2")]
+        [SerializeField] private GameObject obj_hint2;
+        [SerializeField] private Image sprite_hint2;
+        [SerializeField] private TMP_Text text_hint2_button;
+        [SerializeField] private TMP_Text text_hint2_details;
+        [SerializeField] private RectTransform rt_hint2_cooldown;
+
+        [Header("Health")] 
+        [SerializeField] private GameObject obj_health;
+        [SerializeField] private Slider slider_health;
+        [SerializeField] private TMP_Text text_health;
+
+        [Header("Grenade")] 
+        [SerializeField] private GameObject obj_grenade;
+        [SerializeField] private Image sprite_grenade;
+        [SerializeField] private TMP_Text text_grenade_amount;
+        [SerializeField] private TMP_Text text_grenade_button;
+        [SerializeField] private RectTransform rt_grenade_cooldown;
+
+        
+        [Header("Medkit")]
+        [SerializeField] private GameObject obj_medkit;
+        [SerializeField] private Image sprite_medkit;
+        [SerializeField] private TMP_Text text_medkit_amount;
+        [SerializeField] private TMP_Text text_medkit_button;
+        [SerializeField] private RectTransform rt_medkit_cooldown;
+
+
+        [Header("Jetpack")]
+        [SerializeField] private GameObject obj_jetpack;
+        [SerializeField] private Image sprite_jetpack;
+        [SerializeField] private Slider slider_jetpack;
+        
+        [Header("Equipment")]
+        [SerializeField] private GameObject obj_equipment;
+        
+        [Header("Weapon current")] 
+        [SerializeField] private Image sprite_wpn_curr;
+        [SerializeField] private TMP_Text text_wpn_curr_ammo;
+        [SerializeField] private TMP_Text text_wpn_curr_ammo_max;
+        [SerializeField] private RectTransform rt_wpn_curr_cooldown;
+        
+        [Header("Weapon other")] 
+        [SerializeField] private Image sprite_wpn_oth;
+        [SerializeField] private TMP_Text text_wpn_oth_button;
+        
+        [Header("Inventory Slot 1")]
+        [SerializeField] private GameObject obj_slot1;
+        [SerializeField] private GameObject obj_empty_slot1;
+        [SerializeField] private GameObject obj_full_slot1;
+        [SerializeField] private Image sprite_slot1;
+        [SerializeField] private TMP_Text text_slot1_amount;
+        [SerializeField] private TMP_Text text_slot1_button;
+
+        [Header("Inventory Slot 1")]
+        [SerializeField] private GameObject obj_slot2;
+        [SerializeField] private GameObject obj_empty_slot2;
+        [SerializeField] private GameObject obj_full_slot2;
+        [SerializeField] private Image sprite_slot2;
+        [SerializeField] private TMP_Text text_slot2_amount;
+        [SerializeField] private TMP_Text text_slot2_button;
+
+        [Header("Inventory Slot 1")]
+        [SerializeField] private GameObject obj_slot3;
+        [SerializeField] private GameObject obj_empty_slot3;
+        [SerializeField] private GameObject obj_full_slot3;
+        [SerializeField] private Image sprite_slot3;
+        [SerializeField] private TMP_Text text_slot3_amount;
+        [SerializeField] private TMP_Text text_slot3_button;
+        
+        [Header("Inventory Slot 1")]
+        [SerializeField] private GameObject obj_slot4;
+        [SerializeField] private GameObject obj_empty_slot4;
+        [SerializeField] private GameObject obj_full_slot4;
+        [SerializeField] private Image sprite_slot4;
+        [SerializeField] private TMP_Text text_slot4_amount;
+        [SerializeField] private TMP_Text text_slot4_button;
+
+
         [Tab("Controller")] 
         [Header("General")] 
         [SerializeField] private CharacterController controller;
@@ -109,6 +204,9 @@ namespace Demo.Scripts.Runtime
         [Tab("Weapon")] 
         [SerializeField] private List<Weapon> weapons;
         [SerializeField] private FPSCameraShake shake;
+
+        //[Tab("Inventory")]
+        //[SerializeField] private List<Item> items;
 
         private bool disableInput = false;
         private Vector2 _playerInput;
@@ -220,10 +318,22 @@ namespace Demo.Scripts.Runtime
             StopAnimation(0.1f);
             InitWeapon(gun);
             gun.gameObject.SetActive(true);
+            
+            if (ch) ch.SetSizeNoSmooth(minSize);
+            ch = gun.ch;
+            increment = new Vector2(gun.chIncrement,gun.chIncrement);
+            minSize = new Vector2(gun.chMinSize, gun.chMinSize);
+            maxSize = new Vector2(gun.chMaxSize, gun.chMaxSize);
+            reduceTime = gun.chReduceSpeed;
+
+            sprite_wpn_curr.sprite = gun.weaponSprite;
+            text_wpn_curr_ammo.text = gun._currentAmmo.ToString();
+            text_wpn_curr_ammo_max.text = gun.ammoInMag.ToString();
 
             animator.SetFloat(OverlayType, (float) gun.overlayType);
             animator.Play(Equip);
         }
+        
         
         private void ChangeWeapon_Internal()
         {
@@ -289,9 +399,17 @@ namespace Demo.Scripts.Runtime
             InitAimPoint(GetGun());
         }
 
-        private void Fire()
+
+        private Crosshair ch;
+        private Vector2 increment = new Vector2(10, 10);
+        private Vector2 minSize = new Vector2(20, 20);
+        private Vector2 maxSize = new Vector2(100, 100);
+        private float reduceTime = 0.01f;
+        
+        private void Fire() 
         {
             if (_hasActiveAction) return;
+            
 
             Weapon wpn = GetGun();
 
@@ -307,20 +425,26 @@ namespace Demo.Scripts.Runtime
             PlayCameraShake(shake);
             
             wpn.ReduceAmmo();
+            text_wpn_curr_ammo.text = wpn._currentAmmo.ToString();
             _bursts = wpn.burstAmount - 1;
             _fireTimer = 0f;
 
             var worldRecoilVector = wpn.physRecoilPoint.transform.TransformDirection(0,0,-1f*wpn.physRecoilPower);
             rb.AddForce(worldRecoilVector, ForceMode.Impulse);
+
+            Vector2 newSize = ch.GetSize() + increment;
+            
+            //if (newSize.x > maxSize.x) newSize = maxSize;
+            ch.SetSizeNoSmooth(newSize);
         }
 
    
         
-        private void OnFirePressed()
-        {
+        public void OnFirePressed()
+        {      
             if (weapons.Count == 0) return;
             if (_hasActiveAction) return;
-   
+    
             Fire();
             
         }
@@ -330,7 +454,7 @@ namespace Demo.Scripts.Runtime
             return weapons[_index];
         }
 
-        private void OnFireReleased()
+        public void OnFireReleased()
         {
             recoilComponent.Stop();
             _fireTimer = -1f;
@@ -410,11 +534,12 @@ namespace Demo.Scripts.Runtime
             slotLayer.PlayMotion(unCrouchMotionAsset);
         }
 
-        private void TryReload()
+        public void TryReload()
         {
             if (movementState == FPSMovementState.Sprinting || _hasActiveAction) return;
 
-            var reloadClip = GetGun().reloadClip;
+            var wpn = GetGun();
+            var reloadClip = wpn.reloadClip;
             
             if (reloadClip == null) return;
             
@@ -422,10 +547,12 @@ namespace Demo.Scripts.Runtime
             //DisableAim();
             
             PlayAnimation(reloadClip);
-            GetGun().Reload();
+            
+            wpn.Reload();
+            text_wpn_curr_ammo.text = wpn._currentAmmo.ToString();
         }
 
-        private void TryGrenadeThrow()
+        public void TryGrenadeThrow()
         {
             if (movementState == FPSMovementState.Sprinting || _hasActiveAction) return;
 
@@ -437,6 +564,75 @@ namespace Demo.Scripts.Runtime
             PlayAnimation(GetGun().grenadeClip);
         }
 
+
+        public void ShootPressed(InputAction.CallbackContext context)
+        {   
+            if (disableInput) return;
+            if (context.performed)
+            { 
+                OnFirePressed();
+            }
+            else
+            {
+                OnFireReleased();
+            }
+            
+        }
+        
+        public void JetpackPressed(InputAction.CallbackContext context)
+        {
+            if (disableInput) return;
+            if (context.performed)
+            { 
+                SprintPressed();
+            }
+            else
+            {
+                SprintReleased();
+            }
+            
+        }
+
+        public void ReloadPressed(InputAction.CallbackContext context)
+        {
+            if (disableInput) return;
+            if (context.performed)
+            {
+                TryReload();
+            }
+            
+        }
+        
+        public void GrenadePressed(InputAction.CallbackContext context)
+        {
+            if (disableInput) return;
+            if (context.performed)
+            {
+                TryGrenadeThrow();
+            }
+            
+        }
+        
+        public void HealthpackPressed(InputAction.CallbackContext context)
+        {
+            if (disableInput) return;
+            if (context.performed)
+            {
+                //TO DO
+            }
+            
+        }
+
+        public void SwapWeaponPressed(InputAction.CallbackContext context)
+        {
+            if (disableInput) return;
+            if (context.performed)
+            {
+                ChangeWeapon_Internal();
+            }
+        }
+        
+
         private void UpdateActionInput()
         {
             smoothCurveAlpha = FPSAnimLib.ExpDecay(smoothCurveAlpha, _aiming ? 0.4f : 1f, 10,
@@ -444,37 +640,14 @@ namespace Demo.Scripts.Runtime
             
             animator.SetLayerWeight(3, smoothCurveAlpha);
             
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                TryReload();
-            }
 
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                TryGrenadeThrow();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Y))
+          /*  if (Input.GetKeyDown(KeyCode.Y))
             {
                 StopAnimation(0.2f);
-            }
+            }*/
 
             charAnimData.leanDirection = 0;
-
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                SprintPressed();
-            }
-
-            if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                SprintReleased();
-            }
             
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                ChangeWeapon_Internal();
-            } 
 
             if (movementState == FPSMovementState.Sprinting)
             {
@@ -519,22 +692,8 @@ namespace Demo.Scripts.Runtime
                     }
                     
                 }
-
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    OnFirePressed();
-                }
-
-                if (Input.GetKeyUp(KeyCode.Mouse0))
-                {
-                    OnFireReleased();
-                }
-
-                /*if (Input.GetKeyDown(KeyCode.Mouse1))
-                {
-                    ToggleAim();
-                }*/
-
+    
+                /*
                 if (Input.GetKeyDown(KeyCode.V))
                 {
                     ChangeScope();
@@ -552,7 +711,7 @@ namespace Demo.Scripts.Runtime
                         adsLayer.SetPointAim(true);
                         actionState = FPSActionState.PointAiming;
                     }
-                }
+                } */
             }
 
             if (Input.GetKeyDown(KeyCode.C))
@@ -568,7 +727,7 @@ namespace Demo.Scripts.Runtime
                 }
             } 
 
-            if (Input.GetKeyDown(KeyCode.H))
+            /*if (Input.GetKeyDown(KeyCode.H))
             {
                 if (actionState == FPSActionState.Ready)
                 {
@@ -583,7 +742,7 @@ namespace Demo.Scripts.Runtime
                     lookLayer.SetLayerAlpha(.5f);
                     OnFireReleased();
                 }
-            }
+            } */
         }
 
         private Quaternion desiredRotation;
@@ -780,6 +939,7 @@ namespace Demo.Scripts.Runtime
         
         private void UpdateFiring()
         {
+            ch.SetSize(minSize,reduceTime);
             if (recoilComponent == null) return;
             
             if (recoilComponent.fireMode != FireMode.Semi && _fireTimer >= 60f / GetGun().fireRate)
@@ -956,6 +1116,19 @@ namespace Demo.Scripts.Runtime
             
         }
 
+        System.Collections.IEnumerator Cooldown(RectTransform rt, float time)
+        {
+            Vector2 initSize = new Vector2(rt.sizeDelta.x, 0f);
+            Vector2 targetSize = new Vector2(rt.sizeDelta.x, 100f);
+
+            while (rt.sizeDelta.y < 100f)
+            {
+                Vector2 smoothedSize = Vector2.Lerp(initSize, targetSize, time);
+                GetComponent<RectTransform>().sizeDelta = smoothedSize;
+            }
+
+            if (rt.sizeDelta.y >= 100f) yield return null;
+        }
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))

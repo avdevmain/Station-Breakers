@@ -525,6 +525,8 @@ MonoBehaviour:
     pivotPoint: {fileID: 0}
     aimPoint: {fileID: 0}
     leftHandTarget: {fileID: 0}
+    leftHandHint: {fileID: 0}
+    rightHandHint: {fileID: 0}
   animGraph: {fileID: 3283419435696718224}
   animLayers:
   - {fileID: 757951669351840635}
@@ -781,19 +783,6 @@ MonoBehaviour:
   layerName:
     serializedVersion: 2
     m_Bits: 8
-  stepLength: 0
-  pointHeightOffset: 0
-  endPointHeightOffset: 0
-  traceStartOffset: 0
-  traceLength: 0
-  traceIterations: 0
-  testCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  usePredictiveModel: 0
 --- !u!114 &2115404253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,7 +876,7 @@ MonoBehaviour:
     rotation: {x: -0.0845059, y: 0.16233423, z: 0.3118311, w: 0.93234533}
 --- !u!95 &4505190999055681087
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -910,7 +899,8 @@ Animator:
     ...\n\tFrom animation clip 'C_CurveRun'\n\tFrom animation clip 'C_CurveRun'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &279056730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -936,8 +926,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d0c9cae953fca4ab9737e1caf87cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spaced: 0
+  physicsMovement: 0
+  debugText: {fileID: 0}
+  spacedMovement: {fileID: 0}
+  fsm_interactions: {fileID: 0}
   animator: {fileID: 4505190999055681087}
   turnInPlaceAngle: 85
+  turnInPlaceAngleY: 0
+  turnYConsiderRotation: {fileID: 0}
+  pivotPoint: {fileID: 0}
   turnCurve:
     serializedVersion: 2
     m_Curve:
@@ -974,6 +972,54 @@ MonoBehaviour:
   swayLayer: {fileID: 0}
   locoLayer: {fileID: 0}
   slotLayer: {fileID: 0}
+  obj_task: {fileID: 0}
+  sprite_task: {fileID: 0}
+  text_task_name: {fileID: 0}
+  text_task_details: {fileID: 0}
+  obj_hint: {fileID: 0}
+  sprite_hint: {fileID: 0}
+  text_hint_button: {fileID: 0}
+  text_hint_details: {fileID: 0}
+  obj_health: {fileID: 0}
+  slider_health: {fileID: 0}
+  text_health: {fileID: 0}
+  obj_grenade: {fileID: 0}
+  sprite_grenade: {fileID: 0}
+  text_grenade_amount: {fileID: 0}
+  text_grenade_button: {fileID: 0}
+  obj_medkit: {fileID: 0}
+  sprite_medkit: {fileID: 0}
+  text_medkit_amount: {fileID: 0}
+  text_medkit_button: {fileID: 0}
+  obj_jetpack: {fileID: 0}
+  sprite_jetpack: {fileID: 0}
+  slider_jetpack: {fileID: 0}
+  obj_equipment: {fileID: 0}
+  sprite_wpn_curr: {fileID: 0}
+  text_wpn_curr_ammo: {fileID: 0}
+  text_wpn_curr_ammo_max: {fileID: 0}
+  sprite_wpn_oth: {fileID: 0}
+  text_wpn_oth_button: {fileID: 0}
+  obj_slot1: {fileID: 0}
+  sprite_slot1: {fileID: 0}
+  text_slot1_amount: {fileID: 0}
+  text_slot1_button: {fileID: 0}
+  sprite_slot1_button: {fileID: 0}
+  obj_slot2: {fileID: 0}
+  sprite_slot2: {fileID: 0}
+  text_slot2_amount: {fileID: 0}
+  text_slot2_button: {fileID: 0}
+  sprite_slot2_button: {fileID: 0}
+  obj_slot3: {fileID: 0}
+  sprite_slot3: {fileID: 0}
+  text_slot3_amount: {fileID: 0}
+  text_slot3_button: {fileID: 0}
+  sprite_slot3_button: {fileID: 0}
+  obj_slot4: {fileID: 0}
+  sprite_slot4: {fileID: 0}
+  text_slot4_amount: {fileID: 0}
+  text_slot4_button: {fileID: 0}
+  sprite_slot4_button: {fileID: 0}
   controller: {fileID: 6624334007537884657}
   gravity: 9
   jumpHeight: 3
@@ -2992,7 +3038,6 @@ MonoBehaviour:
   rootBone: {fileID: 0}
   isAiming: 0
   useViewLimits: 0
-  useCameraAnimation: 1
 --- !u!1 &6624334008445290586
 GameObject:
   m_ObjectHideFlags: 0

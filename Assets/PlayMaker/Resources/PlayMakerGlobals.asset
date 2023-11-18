@@ -39,3 +39,4 @@ MonoBehaviour:
   - target found
   - target gone
   - collided
+  - updateColor

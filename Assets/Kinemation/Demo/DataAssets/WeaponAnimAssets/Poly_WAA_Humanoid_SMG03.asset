@@ -31,7 +31,7 @@ MonoBehaviour:
     pointAimSpeed: 3
   viewOffset:
     position: {x: 0.1, y: -0.3, z: -0.2}
-    rotation: {x: 0.19460642, y: 0.010344911, z: 0.19847184, w: 0.9605365}
+    rotation: {x: 0.18135291, y: -0.021463, z: 0.20544566, w: 0.96147937}
   springData:
     loc:
       x:

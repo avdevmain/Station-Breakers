@@ -1,11 +1,13 @@
 // Designed by Kinemation, 2023
 
+using System;
 using System.Collections.Generic;
 using HutongGames.PlayMaker.Actions;
 using Kinemation.FPSFramework.Runtime.FPSAnimator;
 using UnityEngine;
 using PlayMaker;
 using TMPro;
+using Obscure.SDC;
 
 namespace Demo.Scripts.Runtime
 {
@@ -18,9 +20,15 @@ namespace Demo.Scripts.Runtime
     
     public class Weapon : FPSAnimWeapon
     {
+        public Sprite weaponSprite;
         public float physRecoilPower;
         public Transform physRecoilPoint;
         public TMP_Text ammoDisplay;
+        public Crosshair ch;
+        public float chMinSize;
+        public float chMaxSize;
+        public float chIncrement;
+        public float chReduceSpeed;
         
         public AnimSequence reloadClip;
         public AnimSequence grenadeClip;
@@ -37,7 +45,7 @@ namespace Demo.Scripts.Runtime
         private int _scopeIndex;
 
         private int _stagedSegments;
-        private int _currentAmmo;
+        public int _currentAmmo;
 
         public void ReduceAmmo()
         {
@@ -96,6 +104,7 @@ namespace Demo.Scripts.Runtime
             _animator.Play("Empty");
             */
         }
+        
 
         // Returns a normalized reload time ratio
         public float GetReloadTime()
@@ -111,6 +120,10 @@ namespace Demo.Scripts.Runtime
             _scopeIndex = _scopeIndex > scopes.Count - 1 ? 0 : _scopeIndex;
             return scopes[_scopeIndex];
         }
+
+ 
+        
+        
         
         public void OnFire()
         {

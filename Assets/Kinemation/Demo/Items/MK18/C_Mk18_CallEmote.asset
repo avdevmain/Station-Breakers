@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: C_Mk18_CallEmote
   m_EditorClassIdentifier: 
   clip: {fileID: 7400000, guid: d6fa8d5d971d9f54c887d013816f3ae0, type: 2}
+  mask: {fileID: 0}
   spineRotation: {x: 0, y: 0, z: 0, w: 1}
-  mask: {fileID: 31900000, guid: 572701504aa6c17498da75bfc9ecc1ea, type: 2}
+  overrideMask: {fileID: 31900000, guid: 682d359e285d23a409d85ef0a534d4c9, type: 2}
+  isAdditive: 1
   blendTime:
-    blendInTime: 0.15
-    blendOutTime: 0.15
+    blendInTime: 0.1
+    blendOutTime: 0.1
     rateScale: 1
   curves:
   - name: MaskLeftHand
@@ -34,7 +36,7 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.76706344
+        time: 0.47494572
         value: 1
         inSlope: 0
         outSlope: 0
@@ -43,63 +45,13 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.98612124
+        time: 0.6744995
         value: 0
-        inSlope: -2.0714386
-        outSlope: -2.0714386
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.20475422
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-  - name: WeaponBone
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -5.0111804
+        outSlope: -5.0111804
         tangentMode: 34
         weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-  - name: Overlay
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
+        inWeight: 0.33333334
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/Obscure045/Scriptable%20Dynamic%20Crosshair/Project/Core/Crosshair/BaseStyleSheet.uss?fileID=7433441132597879392&amp;guid=f62a7e6499314f642bc70494a9a9d3a7&amp;type=3#BaseStyleSheet" />
+    <Style src="project://database/Assets/Scriptable%20Dynamic%20Crosshair/Project/Core/Crosshair/BaseStyleSheet.uss?fileID=7433441132597879392&amp;guid=f62a7e6499314f642bc70494a9a9d3a7&amp;type=3#BaseStyleSheet" />
     <ui:Button text="CROSSHAIR" display-tooltip-when-elided="true" name="Title" class="header" />
     <ui:VisualElement name="Refrences" class="background">
         <ui:Button text="REFRENCES" display-tooltip-when-elided="true" name="referenceToggle" class="toggleButton" />

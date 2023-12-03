@@ -47,7 +47,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -59,7 +59,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.9021459
+        functionName: SetActionActive
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: deb80aa9551eed74fbfdbd2713c9f7ae,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -747,7 +755,8 @@ ModelImporter:
     - name: Right_PinkyDistalEnd
       parentName: Right_PinkyDistal
       position: {x: 0.0000006008148, y: 0.018518925, z: -0.00000010967254}
-      rotation: {x: -0.00000019371505, y: 0.00000003939873, z: 0.000000013270206, w: 1}
+      rotation: {x: -0.00000019371505, y: 0.00000003939873, z: 0.000000013270206,
+        w: 1}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: Right_RingProximal
       parentName: Right_Hand
@@ -807,7 +816,8 @@ ModelImporter:
     - name: Right_IndexDistalEnd
       parentName: Right_IndexDistal
       position: {x: 0.00000020384788, y: 0.024609514, z: -0.0000006198883}
-      rotation: {x: -0.00000002235173, y: 0.000000025635456, z: -0.00000010435031, w: 1}
+      rotation: {x: -0.00000002235173, y: 0.000000025635456, z: -0.00000010435031,
+        w: 1}
       scale: {x: 1.0000002, y: 1.000001, z: 1.0000007}
     - name: Right_ThumbProximal
       parentName: Right_Hand
@@ -827,7 +837,8 @@ ModelImporter:
     - name: Right_ThumbDistalEnd
       parentName: Right_ThumbDistal
       position: {x: 0.00000032424927, y: 0.029458169, z: -0.00000087484716}
-      rotation: {x: -0.000000059604638, y: 0.000000035282365, z: 0.000000113868396, w: 1}
+      rotation: {x: -0.000000059604638, y: 0.000000035282365, z: 0.000000113868396,
+        w: 1}
       scale: {x: 1.0000004, y: 1.0000004, z: 1}
     - name: Left_UpperLeg
       parentName: Hips
@@ -921,7 +932,8 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: f6abb5cf2c66b054dbd6afc546ff3044, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: f6abb5cf2c66b054dbd6afc546ff3044,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1

@@ -3,7 +3,77 @@ guid: fdb20d01a3463364abf3f52740363270
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Brass
+    second: {fileID: 2100000, guid: 864abf79dc59d8148b92d3690d1f6b8b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Green tip
+    second: {fileID: 2100000, guid: d21c9bd730f5444468e0d07bcdaa8a3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bolt
+    second: {fileID: 2100000, guid: eac34b192b25d7c48abf077b1d58b67b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chromed
+    second: {fileID: 2100000, guid: b41752f0ef379974491fcc3d8e6864f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish
+    second: {fileID: 2100000, guid: bd4505e91c6eb664c859cb33c27308cc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish_alu
+    second: {fileID: 2100000, guid: 275cd00cf9d86f043bc65d1ca51f82b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish_bright
+    second: {fileID: 2100000, guid: 33696a5408e1cb34ca64e2cdbe510c7b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish_dark
+    second: {fileID: 2100000, guid: c826d0f4430e99e4e8686ada6ab1090f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish_secondary
+    second: {fileID: 2100000, guid: b97d562092e63594e8959859a55c53ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jacket
+    second: {fileID: 2100000, guid: b5d652c9ddfe5be4782f56efc49a4bfa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mag
+    second: {fileID: 2100000, guid: d8e53ad9dee0437419d5bd52add31093, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polymer
+    second: {fileID: 2100000, guid: 5491c31700dbf714db133d92425a46c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polymer_grip
+    second: {fileID: 2100000, guid: efca638a37f669c408a4e724ad19e87f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: primer
+    second: {fileID: 2100000, guid: 3ad912852a1a60c44ba643bdec0cb2a9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

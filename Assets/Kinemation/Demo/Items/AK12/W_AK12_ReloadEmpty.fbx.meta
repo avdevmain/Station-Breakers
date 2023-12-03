@@ -6,7 +6,37 @@ ModelImporter:
   - first:
       74: -8305949436270019165
     second: W_AK12_ReloadEmpty
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish
+    second: {fileID: 2100000, guid: bcffb3079b5d60849b685d9378a70feb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: finish_milled
+    second: {fileID: 2100000, guid: e8af6620f920de44b9b30af9628afed7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: follower_indicator
+    second: {fileID: 2100000, guid: ab27305663ade2b46b62f7affbb532de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mag_translucent
+    second: {fileID: 2100000, guid: def8f6ba039230f4c84341a4165e8541, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polymer mag
+    second: {fileID: 2100000, guid: d611e9141153910449ac591cbcb1a3ad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: polymer_furniture
+    second: {fileID: 2100000, guid: a4ac98d20efb9c64995d2de2ef806288, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -79,7 +109,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1

@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Demo.Scripts.Runtime
+namespace Kinemation.Demo.Scripts.Runtime
 {
     public class AnimEventReceiver : MonoBehaviour
     {
@@ -18,12 +18,11 @@ namespace Demo.Scripts.Runtime
         
         public void SetActionActive(int isActive)
         {
-            controller.SetActionActive(isActive);
+            if(isActive == 0) controller.ResetActionState();
         }
 
         public void ChangeWeapon()
         {
-            controller.EquipWeapon();
         }
 
         public void RefreshStagedState()

@@ -535,18 +535,14 @@ MonoBehaviour:
     pivotPoint: {fileID: 3463628414348597791}
     aimPoint: {fileID: 6960634655421256307}
     leftHandTarget: {fileID: 6990100777791848041}
-  aimOffsetTable: {fileID: 11400000, guid: 052241ee40ded7e449d93b8dc8023f3d, type: 2}
-  recoilData: {fileID: 11400000, guid: b8322254b95a80542b94c6fdb865f169, type: 2}
   fireMode: 0
   fireRate: 500
   burstAmount: 0
-  overlayPose: {fileID: 11400000, guid: e5196a7dce5c6ff4ab16266e56ed2f88, type: 2}
-  weaponBone:
-    position: {x: 0.0705, y: 1.4982, z: 0.5568}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
   reloadClip: {fileID: 0}
   grenadeClip: {fileID: 0}
+  fireClip: {fileID: 0}
   overlayType: 1
+  canAim: 1
   stagedReloadSegment: 0
   scopes:
   - {fileID: 6960634655421256307}

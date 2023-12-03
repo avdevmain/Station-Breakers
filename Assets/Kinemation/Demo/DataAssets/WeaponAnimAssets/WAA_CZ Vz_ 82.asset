@@ -13,6 +13,12 @@ MonoBehaviour:
   m_Name: WAA_CZ Vz_ 82
   m_EditorClassIdentifier: 
   rotationOffset: {x: 0, y: 0, z: 0, w: 1}
+  aimOffsetTable: {fileID: 11400000, guid: 052241ee40ded7e449d93b8dc8023f3d, type: 2}
+  recoilData: {fileID: 11400000, guid: b8322254b95a80542b94c6fdb865f169, type: 2}
+  overlayPose: {fileID: 11400000, guid: 0e8b0790058e6d841904640eb3e2a131, type: 2}
+  weaponBone:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 1}
   adsData:
     cameraData: {fileID: 11400000, guid: b654eede1a140da469e3545ffaaa3754, type: 2}
     adsTranslationBlend:

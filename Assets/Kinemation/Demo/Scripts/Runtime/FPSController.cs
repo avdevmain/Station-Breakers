@@ -1,80 +1,72 @@
 // Designed by KINEMATION, 2023
 
-using System.Collections.Generic;
-using HutongGames.PlayMaker.Actions;
+using System;
+using Kinemation.FPSFramework.Runtime.Camera;
 using Kinemation.FPSFramework.Runtime.FPSAnimator;
 using Kinemation.FPSFramework.Runtime.Layers;
 using Kinemation.FPSFramework.Runtime.Recoil;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Quaternion = UnityEngine.Quaternion;
-using Vector2 = UnityEngine.Vector2;
-using Vector3 = UnityEngine.Vector3;
 
+using UnityEngine;
+using System.Collections.Generic;
+using Random = UnityEngine.Random;
+
+using Sirenix.OdinInspector;
 using UnityEngine.InputSystem;
 using Obscure.SDC;
 
-namespace Demo.Scripts.Runtime
-{
-    public enum FPSMovementState
-    {
-        Idle,
-        Walking,
-        Running,
-        Sprinting
-    }
 
-    public enum FPSPoseState
+namespace Kinemation.Demo.Scripts.Runtime
+{
+
+    public enum FPSAimState
     {
-        Standing,
-        Crouching
+        None,
+        Ready,
+        Aiming,
+        PointAiming
     }
 
     public enum FPSActionState
     {
         None,
-        Ready,
-        Aiming,
-        PointAiming,
-    }
-
-    public enum FPSCameraState
-    {
-        Default,
-        Barrel,
-        InFront
+        Reloading,
+        WeaponChange
     }
 
     // An example-controller class
     public class FPSController : FPSAnimController
     {
-        [Tab("Dubspac3d")] [Header("Parameters")] 
-        [SerializeField] private bool spaced;
 
-        [SerializeField] private bool physicsMovement;
-
-        [SerializeField] private TMP_Text debugText;
-        [SerializeField] private PlayMakerFSM spacedMovement;
-        [SerializeField] private PlayMakerFSM fsm_interactions;
+        [TabGroup("Tab Group 1", "Animation")]
+        [BoxGroup("Tab Group 1/Animation/General")]
+        [SerializeField] private Animator animator;
         
-        [Tab("Animation")] [Header("General")] [SerializeField]
-        private Animator animator;
-
+        [BoxGroup("Tab Group 1/Animation/Turn In Place")]
         [SerializeField] private float turnInPlaceAngle;
-        [SerializeField] private float turnInPlaceAngleY;
-        [SerializeField] private Transform turnYConsiderRotation;
-        [SerializeField] private Transform pivotPoint;
+        [BoxGroup("Tab Group 1/Animation/Turn In Place")]
         [SerializeField] private AnimationCurve turnCurve = new AnimationCurve(new Keyframe(0f, 0f));
+        [BoxGroup("Tab Group 1/Animation/Turn In Place")]
         [SerializeField] private float turnSpeed = 1f;
         
-        [Header("Dynamic Motions")]
+        [BoxGroup("Tab Group 1/Animation/Leaning")]
+        [SerializeField] private float smoothLeanStep = 1f;
+        [BoxGroup("Tab Group 1/Animation/Leaning")]
+        [SerializeField, Range(0f, 1f)] private float startLean = 1f;
+        
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
         [SerializeField] private IKAnimation aimMotionAsset;
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
         [SerializeField] private IKAnimation leanMotionAsset;
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
         [SerializeField] private IKAnimation crouchMotionAsset;
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
         [SerializeField] private IKAnimation unCrouchMotionAsset;
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
         [SerializeField] private IKAnimation onJumpMotionAsset;
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
         [SerializeField] private IKAnimation onLandedMotionAsset;
+        [BoxGroup("Tab Group 1/Animation/Dynamic Motions")]
+        [SerializeField] private IKAnimation onStartStopMoving;
 
         // Animation Layers
         [SerializeField] [HideInInspector] private LookLayer lookLayer;
@@ -82,27 +74,74 @@ namespace Demo.Scripts.Runtime
         [SerializeField] [HideInInspector] private SwayLayer swayLayer;
         [SerializeField] [HideInInspector] private LocomotionLayer locoLayer;
         [SerializeField] [HideInInspector] private SlotLayer slotLayer;
+        [SerializeField] [HideInInspector] private WeaponCollision collisionLayer;
+        [SerializeField] [HideInInspector] private ShootLayer shootLayer;
         // Animation Layers
+        
 
+        
+        [TabGroup("Tab Group 1", "Controller")]
+        [BoxGroup("Tab Group 1/Controller/General")]
+        [SerializeField] private float timeScale = 1f;
+        [BoxGroup("Tab Group 1/Controller/General")]
+        [SerializeField, Min(0f)] private float equipDelay = 0f;
+        
+        [BoxGroup("Tab Group 1/Controller/Camera")]
+        [SerializeField] private Transform mainCamera;
+
+        [BoxGroup("Tab Group 1/Controller/Camera")]
+        [SerializeField] private Transform cameraHolder;
+        [BoxGroup("Tab Group 1/Controller/Camera")]
+        [SerializeField] private Transform firstPersonCamera;
+        [BoxGroup("Tab Group 1/Controller/Camera")]
+        [SerializeField] private float sensitivity;
+        [BoxGroup("Tab Group 1/Controller/Camera")]
+        [SerializeField] private Vector2 freeLookAngle;
+        
+        [BoxGroup("Tab Group 1/Controller/Movement")]
+        [SerializeField] private FPSMovement movementComponent;
+        
+        [TabGroup("Tab Group 1", "Weapon")]
+        [BoxGroup("Tab Group 1/Weapon/General")]
+        [SerializeField] private List<Weapon> weapons;
+        [BoxGroup("Tab Group 1/Weapon/General")]
+        public Transform weaponBone;
+        
+        
+        [TabGroup("Tab Group 1", "Dubspac3d")]
+        [BoxGroup("Tab Group 1/Dubspac3d/General")]
+        public bool spaced;
+        [BoxGroup("Tab Group 1/Dubspac3d/General")]
+        [SerializeField] private PlayMakerFSM fsm_interactions;
+
+        [BoxGroup("Tab Group 1/Dubspac3d/General")] 
+        [SerializeField] private float rollSpeed = 1f;
+
+
+        [BoxGroup("Tab Group 1/Animation/Turn In Place")]
+        [SerializeField] private float turnInPlaceAngleY;
+        [BoxGroup("Tab Group 1/Animation/Turn In Place")]
+        [SerializeField] private Transform turnYConsiderRotation, pivotPoint;
+        
+        [TabGroup("Tab Group HUD", "General")]
+        [SerializeField] private GameObject ch_parent;
+                /*
         [Tab("HUD")] 
         [Header("Task")]
         [SerializeField] private GameObject obj_task;
         [SerializeField] private Image sprite_task;
-        [SerializeField] private TMP_Text text_task_name;
-        [SerializeField] private TMP_Text text_task_details;
+        [SerializeField] private TMP_Text text_task_name, text_task_details;
         
         [Header("Hint_1")]
         [SerializeField] private GameObject obj_hint1;
         [SerializeField] private Image sprite_hint1;
-        [SerializeField] private TMP_Text text_hint1_button;
-        [SerializeField] private TMP_Text text_hint1_details;
+        [SerializeField] private TMP_Text text_hint1_button, text_hint1_details;
         [SerializeField] private RectTransform rt_hint1_cooldown;
         
         [Header("Hint_2")]
         [SerializeField] private GameObject obj_hint2;
         [SerializeField] private Image sprite_hint2;
-        [SerializeField] private TMP_Text text_hint2_button;
-        [SerializeField] private TMP_Text text_hint2_details;
+        [SerializeField] private TMP_Text text_hint2_button, text_hint2_details;
         [SerializeField] private RectTransform rt_hint2_cooldown;
 
         [Header("Health")] 
@@ -113,16 +152,14 @@ namespace Demo.Scripts.Runtime
         [Header("Grenade")] 
         [SerializeField] private GameObject obj_grenade;
         [SerializeField] private Image sprite_grenade;
-        [SerializeField] private TMP_Text text_grenade_amount;
-        [SerializeField] private TMP_Text text_grenade_button;
+        [SerializeField] private TMP_Text text_grenade_amount, text_grenade_button;
         [SerializeField] private RectTransform rt_grenade_cooldown;
 
         
         [Header("Medkit")]
         [SerializeField] private GameObject obj_medkit;
         [SerializeField] private Image sprite_medkit;
-        [SerializeField] private TMP_Text text_medkit_amount;
-        [SerializeField] private TMP_Text text_medkit_button;
+        [SerializeField] private TMP_Text text_medkit_amount, text_medkit_button;
         [SerializeField] private RectTransform rt_medkit_cooldown;
 
 
@@ -136,8 +173,7 @@ namespace Demo.Scripts.Runtime
         
         [Header("Weapon current")] 
         [SerializeField] private Image sprite_wpn_curr;
-        [SerializeField] private TMP_Text text_wpn_curr_ammo;
-        [SerializeField] private TMP_Text text_wpn_curr_ammo_max;
+        [SerializeField] private TMP_Text text_wpn_curr_ammo, text_wpn_curr_ammo_max;
         [SerializeField] private RectTransform rt_wpn_curr_cooldown;
         
         [Header("Weapon other")] 
@@ -145,168 +181,141 @@ namespace Demo.Scripts.Runtime
         [SerializeField] private TMP_Text text_wpn_oth_button;
         
         [Header("Inventory Slot 1")]
-        [SerializeField] private GameObject obj_slot1;
-        [SerializeField] private GameObject obj_empty_slot1;
-        [SerializeField] private GameObject obj_full_slot1;
+        [SerializeField] private GameObject obj_slot1, obj_empty_slot1, obj_full_slot1;
         [SerializeField] private Image sprite_slot1;
-        [SerializeField] private TMP_Text text_slot1_amount;
-        [SerializeField] private TMP_Text text_slot1_button;
+        [SerializeField] private TMP_Text text_slot1_amount, text_slot1_button;
 
         [Header("Inventory Slot 1")]
-        [SerializeField] private GameObject obj_slot2;
-        [SerializeField] private GameObject obj_empty_slot2;
-        [SerializeField] private GameObject obj_full_slot2;
+        [SerializeField] private GameObject obj_slot2, obj_empty_slot2, obj_full_slot2;
         [SerializeField] private Image sprite_slot2;
-        [SerializeField] private TMP_Text text_slot2_amount;
-        [SerializeField] private TMP_Text text_slot2_button;
+        [SerializeField] private TMP_Text text_slot2_amount, text_slot2_button;
 
         [Header("Inventory Slot 1")]
-        [SerializeField] private GameObject obj_slot3;
-        [SerializeField] private GameObject obj_empty_slot3;
-        [SerializeField] private GameObject obj_full_slot3;
+        [SerializeField] private GameObject obj_slot3, obj_empty_slot3, obj_full_slot3;
         [SerializeField] private Image sprite_slot3;
-        [SerializeField] private TMP_Text text_slot3_amount;
-        [SerializeField] private TMP_Text text_slot3_button;
+        [SerializeField] private TMP_Text text_slot3_amount, TMP_Text text_slot3_button;
         
         [Header("Inventory Slot 1")]
-        [SerializeField] private GameObject obj_slot4;
-        [SerializeField] private GameObject obj_empty_slot4;
-        [SerializeField] private GameObject obj_full_slot4;
+        [SerializeField] private GameObject obj_slot4, obj_empty_slot4, obj_full_slot4;
         [SerializeField] private Image sprite_slot4;
-        [SerializeField] private TMP_Text text_slot4_amount;
-        [SerializeField] private TMP_Text text_slot4_button;
+        [SerializeField] private TMP_Text text_slot4_amount, text_slot4_button;
+        */
 
-
-        [Tab("Controller")] 
-        [Header("General")] 
-        [SerializeField] private CharacterController controller;
-        [SerializeField] private float gravity = 8f;
-        [SerializeField] private float jumpHeight = 9f;
-        private bool _isInAir = false;
-
-        [Header("Camera")]
-        [SerializeField] public Transform mainCamera;
-        [SerializeField] private Transform cameraHolder;
-        [SerializeField] private Transform firstPersonCamera;
-        [SerializeField] private Transform freeCamera;
-        [SerializeField] private float sensitivity;
-        [SerializeField] private Vector2 freeLookAngle;
+        private Rigidbody rb;
         
-        [Header("Movement")] 
-        [SerializeField] private float curveLocomotionSmoothing = 2f;
-        [SerializeField] private float moveSmoothing = 2f;
-        [SerializeField] private float sprintSpeed = 3f;
-        [SerializeField] private float walkingSpeed = 2f;
-        [SerializeField] private float crouchSpeed = 1f;
-        [SerializeField] private float crouchRatio = 0.5f;
-        private float speed;
 
-        [Tab("Weapon")] 
-        [SerializeField] private List<Weapon> weapons;
-        [SerializeField] private FPSCameraShake shake;
-
-        //[Tab("Inventory")]
-        //[SerializeField] private List<Item> items;
-
-        private bool disableInput = false;
+        
+        
         private Vector2 _playerInput;
 
         // Used for free-look
         private Vector2 _freeLookInput;
-        private Vector2 _smoothAnimatorMove;
-        private Vector2 _smoothMove;
 
         private int _index;
         private int _lastIndex;
-
-        private float _fireTimer = -1f;
+        
         private int _bursts;
-        private bool _aiming;
         private bool _freeLook;
-        private bool _hasActiveAction;
         
+        private FPSAimState aimState;
         private FPSActionState actionState;
-        private FPSMovementState movementState;
-        private FPSPoseState poseState;
-        private FPSCameraState cameraState = FPSCameraState.Default;
-        
-        private float originalHeight;
-        private Vector3 originalCenter;
 
         private float smoothCurveAlpha = 0f;
-
+        
         private static readonly int Crouching = Animator.StringToHash("Crouching");
-        private static readonly int Moving = Animator.StringToHash("Moving");
-        private static readonly int MoveX = Animator.StringToHash("MoveX");
-        private static readonly int MoveY = Animator.StringToHash("MoveY");
-        private static readonly int Velocity = Animator.StringToHash("Velocity");
         private static readonly int OverlayType = Animator.StringToHash("OverlayType");
         private static readonly int TurnRight = Animator.StringToHash("TurnRight");
         private static readonly int TurnLeft = Animator.StringToHash("TurnLeft");
-        private static readonly int InAir = Animator.StringToHash("InAir");
-        private static readonly int Equip = Animator.StringToHash("Equip");
         private static readonly int UnEquip = Animator.StringToHash("Unequip");
 
-        private Rigidbody rb;
-        
+        private Vector2 _controllerRecoil;
+        private float _recoilStep;
+        private bool _isFiring;
+
+        private bool _isUnarmed;
+
         private void InitLayers()
         {
             InitAnimController();
-
-            controller = GetComponentInChildren<CharacterController>();
+            
             animator = GetComponentInChildren<Animator>();
             lookLayer = GetComponentInChildren<LookLayer>();
             adsLayer = GetComponentInChildren<AdsLayer>();
             locoLayer = GetComponentInChildren<LocomotionLayer>();
             swayLayer = GetComponentInChildren<SwayLayer>();
             slotLayer = GetComponentInChildren<SlotLayer>();
+            collisionLayer = GetComponentInChildren<WeaponCollision>();
+            shootLayer = GetComponentInChildren<ShootLayer>();
+        }
+
+        private bool HasActiveAction()
+        {
+            return actionState != FPSActionState.None;
+        }
+
+        private bool IsAiming()
+        {
+            return aimState is FPSAimState.Aiming or FPSAimState.PointAiming;
         }
 
         private void Start()
         {
-            Time.timeScale = 1f;
-            
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             
-            speed = walkingSpeed;
-            
-            originalHeight = controller.height;
-            originalCenter = controller.center;
-
             moveRotation = transform.rotation;
 
+            movementComponent = GetComponent<FPSMovement>();
+            
+            movementComponent.onStartMoving.AddListener(() => slotLayer.PlayMotion(onStartStopMoving));
+            movementComponent.onStopMoving.AddListener(() => slotLayer.PlayMotion(onStartStopMoving));
+            
+            movementComponent.onCrouch.AddListener(OnCrouch);
+            movementComponent.onUncrouch.AddListener(OnUncrouch);
+            
+            movementComponent.onJump.AddListener(OnJump);
+            movementComponent.onLanded.AddListener(OnLand);
+            
+            movementComponent.onSprintStarted.AddListener(OnSprintStarted);
+            movementComponent.onSprintEnded.AddListener(OnSprintEnded);
+            
+            movementComponent.sprintCondition += () => !HasActiveAction();
+
+            actionState = FPSActionState.None;
+
+            rb = GetComponent<Rigidbody>();
+            fsm_interactions.Fsm.GetFsmGameObject("camera").Value = mainCamera.gameObject;
+                
             InitLayers();
             EquipWeapon();
-            rb = GetComponent<Rigidbody>();
             
-            fsm_interactions.Fsm.GetFsmGameObject("camera").Value = mainCamera.gameObject;
+            SetupGravityState(!spaced); // TEMP, TBD IN SCENES (maps)
         }
         
-        private void StartWeaponChange()
+        private void UnequipWeapon()
         {
-            DisableAim();
+            Destroy(ch_parent.transform.GetChild(0).gameObject);
             
-            _hasActiveAction = true;
+            DisableAim();
+
+            actionState = FPSActionState.WeaponChange;
             animator.CrossFade(UnEquip, 0.1f);
         }
 
-        public void SetActionActive(int isActive)
+        public void ResetActionState()
         {
-            _hasActiveAction = isActive != 0;
+            actionState = FPSActionState.None;
         }
 
         public void RefreshStagedState()
         {
-            GetGun().stagedReloadSegment++;
         }
         
         public void ResetStagedState()
         {
-            GetGun().stagedReloadSegment = 0;
         }
 
-        public void EquipWeapon()
+        private void EquipWeapon()
         {
             if (weapons.Count == 0) return;
 
@@ -318,27 +327,44 @@ namespace Demo.Scripts.Runtime
             StopAnimation(0.1f);
             InitWeapon(gun);
             gun.gameObject.SetActive(true);
-            
-            if (ch) ch.SetSizeNoSmooth(minSize);
-            ch = gun.ch;
-            increment = new Vector2(gun.chIncrement,gun.chIncrement);
-            minSize = new Vector2(gun.chMinSize, gun.chMinSize);
-            maxSize = new Vector2(gun.chMaxSize, gun.chMaxSize);
-            reduceTime = gun.chReduceSpeed;
-
-            sprite_wpn_curr.sprite = gun.weaponSprite;
-            text_wpn_curr_ammo.text = gun._currentAmmo.ToString();
-            text_wpn_curr_ammo_max.text = gun.ammoInMag.ToString();
+            gun.ch = Instantiate(gun.ch_prefab, ch_parent.transform).GetComponent<Crosshair>();
 
             animator.SetFloat(OverlayType, (float) gun.overlayType);
-            animator.Play(Equip);
+            actionState = FPSActionState.None;
+
+            //weaponData.muzzle_spawn = gun.muzzle_spawn;
+            //weaponData.projectile_spawn = gun.projectile_spawn;
+            //weaponData.projectile_prefab = gun.projectile_prefab;
+            //weaponData.muzzle_prefab = gun.muzzle_prefab;
+            //weaponData.projectile_speed = gun.projectile_speed;
+
+            SetupShootLayer(gun);
         }
-        
+
+        private void SetupShootLayer(Weapon gun)
+        {
+            shootLayer.muzzle_spawn = gun.muzzle_spawn;
+            shootLayer.projectile_spawn = gun.projectile_spawn;
+            shootLayer.projectile_prefab = gun.projectile_prefab;
+            shootLayer.muzzle_prefab = gun.muzzle_prefab;
+            shootLayer.projectile_speed = gun.projectile_speed;
+            shootLayer.projectile_damage = gun.damage;
+            shootLayer.projectile_hor_disp = gun.projectile_hor_disp;
+            shootLayer.projectile_ver_disp = gun.projectile_ver_disp;
+        }
+        private void EnableUnarmedState()
+        {
+            if (weapons.Count == 0) return;
+            
+            weapons[_index].gameObject.SetActive(false);
+            animator.SetFloat(OverlayType, 0);
+        }
         
         private void ChangeWeapon_Internal()
         {
-            if (movementState == FPSMovementState.Sprinting) return;
-            if (_hasActiveAction) return;
+            if (movementComponent.PoseState == FPSPoseState.Prone) return;
+            
+            if (HasActiveAction()) return;
             
             OnFireReleased();
             
@@ -352,46 +378,44 @@ namespace Demo.Scripts.Runtime
             _lastIndex = _index;
             _index = newIndex;
 
-            StartWeaponChange();
+            UnequipWeapon();
+            Invoke(nameof(EquipWeapon), equipDelay);
         }
 
         private void DisableAim()
         {
-            _aiming = false;
-            OnInputAim(_aiming);
+            if (!GetGun().canAim) return;
             
-            actionState = FPSActionState.None;
+            aimState = FPSAimState.None;
+            OnInputAim(false);
+            
             adsLayer.SetAds(false);
             adsLayer.SetPointAim(false);
-            swayLayer.SetFreeAimEnable(true);
+            //swayLayer.SetFreeAimEnable(true);
             swayLayer.SetLayerAlpha(1f);
             slotLayer.PlayMotion(aimMotionAsset);
         }
 
         public void ToggleAim()
         {
-            if (_hasActiveAction)
-            {
-                //return;
-            }
+            if (!GetGun().canAim) return;
             
-            _aiming = !_aiming;
-
-            if (_aiming)
+            if (!IsAiming())
             {
-                actionState = FPSActionState.Aiming;
+                aimState = FPSAimState.Aiming;
+                OnInputAim(true);
+                
                 adsLayer.SetAds(true);
-                swayLayer.SetFreeAimEnable(false);
-                swayLayer.SetLayerAlpha(0.3f);
+                //swayLayer.SetFreeAimEnable(false);
+                swayLayer.SetLayerAlpha(0.5f);
                 slotLayer.PlayMotion(aimMotionAsset);
-                OnInputAim(_aiming);
             }
             else
             {
                 DisableAim();
             }
 
-            recoilComponent.isAiming = _aiming;
+            recoilComponent.isAiming = IsAiming();
         }
 
         public void ChangeScope()
@@ -399,389 +423,290 @@ namespace Demo.Scripts.Runtime
             InitAimPoint(GetGun());
         }
 
-
-        private Crosshair ch;
-        private Vector2 increment = new Vector2(10, 10);
-        private Vector2 minSize = new Vector2(20, 20);
-        private Vector2 maxSize = new Vector2(100, 100);
-        private float reduceTime = 0.01f;
-        
-        private void Fire() 
+        private void Fire()
         {
-            if (_hasActiveAction) return;
-            
+            if (HasActiveAction()) return;
 
             Weapon wpn = GetGun();
 
-
             if (!wpn.HasEnoughAmmo()) 
-            {Debug.Log("no ammo");
+            {
+                Debug.Log("no ammo");
+                
+                OnFireReleased();
                 return;
+                //NO AMMO ADDITIONAL LOGIC
             }
+
+            shootLayer.shooting = true;
+           // shootLayer.Invoke("SpawnProjectile", 0f);
             
             wpn.OnFire();
             
-            recoilComponent.Play();
-            PlayCameraShake(shake);
-            
             wpn.ReduceAmmo();
-            text_wpn_curr_ammo.text = wpn._currentAmmo.ToString();
-            _bursts = wpn.burstAmount - 1;
-            _fireTimer = 0f;
 
-            var worldRecoilVector = wpn.physRecoilPoint.transform.TransformDirection(0,0,-1f*wpn.physRecoilPower);
-            rb.AddForce(worldRecoilVector, ForceMode.Impulse);
-
-            Vector2 newSize = ch.GetSize() + increment;
+            PlayAnimation(wpn.fireClip);
             
-            //if (newSize.x > maxSize.x) newSize = maxSize;
-            ch.SetSizeNoSmooth(newSize);
+            PlayCameraShake(wpn.cameraShake);
+
+            if (wpn.recoilPattern != null)
+            {
+                float aimRatio = IsAiming() ? wpn.recoilPattern.aimRatio : 1f;
+                float hRecoil = Random.Range(wpn.recoilPattern.horizontalVariation.x,
+                    wpn.recoilPattern.horizontalVariation.y);
+                _controllerRecoil += new Vector2(hRecoil, _recoilStep) * aimRatio;
+            }
+            
+            if (recoilComponent == null || wpn.weaponAsset.recoilData == null)
+            {
+                return;
+            }
+            
+            recoilComponent.Play();
+            
+            if (recoilComponent.fireMode == FireMode.Burst)
+            {
+                if (_bursts == 0)
+                {
+                    OnFireReleased();
+                    return;
+                }
+                
+                _bursts--;
+            }
+
+            if (recoilComponent.fireMode == FireMode.Semi)
+            {
+                _isFiring = false;
+                return;
+            }
+            
+            Invoke(nameof(Fire), 60f / wpn.fireRate);
+            _recoilStep += wpn.recoilPattern.acceleration;
+            
+            
+            if (spaced)
+            {
+                //var worldRecoilVector =  wpn.physRecoilPoint.transform.TransformDirection(0, 0, -1f * wpn.physRecoilPower);
+                //rb.AddForce(worldRecoilVector, ForceMode.Impulse);
+                
+                rb.AddRelativeForce(Vector3.back*wpn.physRecoilPower, ForceMode.Impulse);
+            }
         }
 
-   
-        
-        public void OnFirePressed()
-        {      
-            if (weapons.Count == 0) return;
-            if (_hasActiveAction) return;
-    
-            Fire();
+        private void OnFirePressed()
+        {
+            if (weapons.Count == 0 || HasActiveAction()) return;
+
+            _bursts = GetGun().burstAmount - 1;
+
+            if (GetGun().recoilPattern != null)
+            {
+                _recoilStep = GetGun().recoilPattern.step;
+            }
             
+            _isFiring = true;
+            Fire();
         }
 
         private Weapon GetGun()
         {
+            if (weapons.Count == 0) return null;
+            
             return weapons[_index];
         }
 
-        public void OnFireReleased()
+        private void OnFireReleased()
         {
-            recoilComponent.Stop();
-            _fireTimer = -1f;
-        }
+            if (weapons.Count == 0) return;
 
-        private void SprintPressed()
-        {
-            if (poseState == FPSPoseState.Crouching || _hasActiveAction || _isInAir)
+            if (recoilComponent != null)
             {
-                return;
+                recoilComponent.Stop();
             }
 
-            if (spaced) return;
+            _recoilStep = 0f;
+            _isFiring = false;
+            CancelInvoke(nameof(Fire));
+        }
 
+        private void OnSlideStarted()
+        {
+            lookLayer.SetLayerAlpha(0.3f);
+        }
+
+        private void OnSlideEnded()
+        {
+            lookLayer.SetLayerAlpha(1f);
+        }
+
+        private void OnSprintStarted()
+        {
             OnFireReleased();
             lookLayer.SetLayerAlpha(0.5f);
             adsLayer.SetLayerAlpha(0f);
             locoLayer.SetReadyWeight(0f);
+            
+            aimState = FPSAimState.None;
 
-            movementState = FPSMovementState.Sprinting;
-            actionState = FPSActionState.None;
-
-            recoilComponent.Stop();
-
-            speed = sprintSpeed;
+            if (recoilComponent != null)
+            {
+                recoilComponent.Stop();
+            }
         }
 
-        private void SprintReleased()
+        private void OnSprintEnded()
         {
-            if (poseState == FPSPoseState.Crouching)
-            {
-                return;
-            }
-
             lookLayer.SetLayerAlpha(1f);
             adsLayer.SetLayerAlpha(1f);
-            movementState = FPSMovementState.Walking;
-
-            speed = walkingSpeed;
         }
 
-        private void Crouch()
+        private void OnCrouch()
         {
-            //todo: crouching implementation
-            
-            float crouchedHeight = originalHeight * crouchRatio;
-            float heightDifference = originalHeight - crouchedHeight;
-
-            controller.height = crouchedHeight;
-
-            // Adjust the center position so the bottom of the capsule remains at the same position
-            Vector3 crouchedCenter = originalCenter;
-            crouchedCenter.y -= heightDifference / 2;
-            controller.center = crouchedCenter;
-
-            speed = crouchSpeed;
-
             lookLayer.SetPelvisWeight(0f);
-
-            poseState = FPSPoseState.Crouching;
             animator.SetBool(Crouching, true);
             slotLayer.PlayMotion(crouchMotionAsset);
         }
 
-        private void Uncrouch()
+        private void OnUncrouch()
         {
-            //todo: crouching implementation
-            controller.height = originalHeight;
-            controller.center = originalCenter;
-
-            speed = walkingSpeed;
-
             lookLayer.SetPelvisWeight(1f);
-
-            poseState = FPSPoseState.Standing;
             animator.SetBool(Crouching, false);
             slotLayer.PlayMotion(unCrouchMotionAsset);
         }
 
-        public void TryReload()
+        private void OnJump()
         {
-            if (movementState == FPSMovementState.Sprinting || _hasActiveAction) return;
+            slotLayer.PlayMotion(onJumpMotionAsset);
+        }
 
-            var wpn = GetGun();
-            var reloadClip = wpn.reloadClip;
-            
+        private void OnLand()
+        {
+            slotLayer.PlayMotion(onLandedMotionAsset);
+        }
+
+        private void TryReload()
+        {
+            if (HasActiveAction()) return;
+
+            var reloadClip = GetGun().reloadClip;
+
             if (reloadClip == null) return;
             
             OnFireReleased();
-            //DisableAim();
             
             PlayAnimation(reloadClip);
-            
-            wpn.Reload();
-            text_wpn_curr_ammo.text = wpn._currentAmmo.ToString();
+            GetGun().Reload();
+            actionState = FPSActionState.Reloading;
         }
 
-        public void TryGrenadeThrow()
+        private void TryGrenadeThrow()
         {
-            if (movementState == FPSMovementState.Sprinting || _hasActiveAction) return;
+            if (HasActiveAction()) return;
 
             if (GetGun().grenadeClip == null) return;
-
             
             OnFireReleased();
             DisableAim();
             PlayAnimation(GetGun().grenadeClip);
+            actionState = FPSActionState.Reloading;
         }
 
-
-        public void ShootPressed(InputAction.CallbackContext context)
-        {   
-            if (disableInput) return;
-            if (context.performed)
-            { 
-                OnFirePressed();
-            }
-            else
-            {
-                OnFireReleased();
-            }
-            
-        }
-        
-        public void JetpackPressed(InputAction.CallbackContext context)
-        {
-            if (disableInput) return;
-            if (context.performed)
-            { 
-                SprintPressed();
-            }
-            else
-            {
-                SprintReleased();
-            }
-            
-        }
-
-        public void ReloadPressed(InputAction.CallbackContext context)
-        {
-            if (disableInput) return;
-            if (context.performed)
-            {
-                TryReload();
-            }
-            
-        }
-        
-        public void GrenadePressed(InputAction.CallbackContext context)
-        {
-            if (disableInput) return;
-            if (context.performed)
-            {
-                TryGrenadeThrow();
-            }
-            
-        }
-        
-        public void HealthpackPressed(InputAction.CallbackContext context)
-        {
-            if (disableInput) return;
-            if (context.performed)
-            {
-                //TO DO
-            }
-            
-        }
-
-        public void SwapWeaponPressed(InputAction.CallbackContext context)
-        {
-            if (disableInput) return;
-            if (context.performed)
-            {
-                ChangeWeapon_Internal();
-            }
-        }
-        
+        private bool _isLeaning;
 
         private void UpdateActionInput()
         {
-            smoothCurveAlpha = FPSAnimLib.ExpDecay(smoothCurveAlpha, _aiming ? 0.4f : 1f, 10,
-                Time.deltaTime);
+            smoothCurveAlpha = Mathf.Lerp(smoothCurveAlpha, IsAiming() ? 0.5f : 1f, 
+                FPSAnimLib.ExpDecayAlpha(10f, Time.deltaTime));
             
             animator.SetLayerWeight(3, smoothCurveAlpha);
-            
 
-          /*  if (Input.GetKeyDown(KeyCode.Y))
-            {
-                StopAnimation(0.2f);
-            }*/
-
-            charAnimData.leanDirection = 0;
-            
-
-            if (movementState == FPSMovementState.Sprinting)
+            if (movementComponent.MovementState == FPSMovementState.Sprinting)
             {
                 return;
             }
             
-            if (actionState != FPSActionState.Ready)
+            if (Input.GetKeyDown(KeyCode.L))
             {
-                if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyUp(KeyCode.Q)
-                                                || Input.GetKeyDown(KeyCode.E) || Input.GetKeyUp(KeyCode.E))
+                SetupGravityState(spaced);
+            }
+
+            
+            if (Input.GetKeyDown(KeyCode.Alpha0) && !HasActiveAction())
+            {
+                _isUnarmed = !_isUnarmed;
+
+                if (_isUnarmed)
+                {
+                    UnequipWeapon();
+                    Invoke(nameof(EnableUnarmedState), equipDelay);
+                }
+                else
+                {
+                    //weapons[_index].gameObject.SetActive(true);
+                    EquipWeapon();
+                    //animator.SetFloat(OverlayType, (float) GetGun().overlayType);
+                }
+                
+                lookLayer.SetLayerAlpha(_isUnarmed ? 0.3f : 1f);
+            }
+
+            
+            if (_isUnarmed) return;
+            
+            if (aimState != FPSAimState.Ready)
+            {
+                bool wasLeaning = _isLeaning;
+                
+                bool rightLean = Input.GetKey(KeyCode.E);
+                bool leftLean = Input.GetKey(KeyCode.Q);
+
+                _isLeaning = rightLean || leftLean;
+                
+                if (_isLeaning != wasLeaning)
                 {
                     slotLayer.PlayMotion(leanMotionAsset);
+                    charAnimData.SetLeanInput(wasLeaning ? 0f : rightLean ? -startLean : startLean);
                 }
 
+                if (_isLeaning)
+                {
+                    float leanValue = Input.GetAxis("Mouse ScrollWheel") * smoothLeanStep;
+                    charAnimData.AddLeanInput(leanValue);
+                }
+                
                 if (Input.GetKey(KeyCode.Q))
                 {
                     charAnimData.leanDirection = 1;
-                    if (physicsMovement)
-                    {
-                        rb.AddRelativeTorque(Vector3.forward,ForceMode.Impulse);
-                    }
-                    else
-                    {
-                        transform.rotation *= Quaternion.Euler(0f, 0f, 1f); /////////
-                        transform.rotation *= Quaternion.Slerp(Quaternion.identity,
-                            Quaternion.Euler(0f, 0f, turnInPlaceAngle / 100), Time.deltaTime);
-                    }
-
+                    rb.AddRelativeTorque(Vector3.forward* rb.mass/500 * rollSpeed,ForceMode.Impulse);
                 }
                 else if (Input.GetKey(KeyCode.E))
                 {
                     charAnimData.leanDirection = -1;
-                    if (physicsMovement)
-                    {
-                        rb.AddRelativeTorque(Vector3.back,ForceMode.Impulse);
-                    }
-                    else
-                    {
-                        transform.rotation *= Quaternion.Euler(0f,0f, -1f); /////////
-                        transform.rotation *= Quaternion.Slerp(Quaternion.identity,
-                            Quaternion.Euler(0f, 0f, turnInPlaceAngle/100), Time.deltaTime);
-                    }
-                    
-                }
-    
-                /*
-                if (Input.GetKeyDown(KeyCode.V))
-                {
-                    ChangeScope();
+                    rb.AddRelativeTorque(Vector3.back * rb.mass/500 * rollSpeed, ForceMode.Impulse);
                 }
 
-                if (Input.GetKeyDown(KeyCode.B) && _aiming)
-                {
-                    if (actionState == FPSActionState.PointAiming)
-                    {
-                        adsLayer.SetPointAim(false);
-                        actionState = FPSActionState.Aiming;
-                    }
-                    else
-                    {
-                        adsLayer.SetPointAim(true);
-                        actionState = FPSActionState.PointAiming;
-                    }
-                } */
+               // if (Input.GetKeyDown(KeyCode.Mouse1))
+               // {
+                //    ToggleAim();
+                //}
             }
-
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                if (spaced) return;
-                if (poseState == FPSPoseState.Standing)
-                {
-                    Crouch();
-                }
-                else
-                {
-                    Uncrouch();
-                }
-            } 
-
-            /*if (Input.GetKeyDown(KeyCode.H))
-            {
-                if (actionState == FPSActionState.Ready)
-                {
-                    actionState = FPSActionState.None;
-                    locoLayer.SetReadyWeight(0f);
-                    lookLayer.SetLayerAlpha(1f);
-                }
-                else
-                {
-                    actionState = FPSActionState.Ready;
-                    locoLayer.SetReadyWeight(1f);
-                    lookLayer.SetLayerAlpha(.5f);
-                    OnFireReleased();
-                }
-            } */
         }
 
-        private Quaternion desiredRotation;
-        private Quaternion desiredRotationY;
-        private Quaternion moveRotation;
-        private Quaternion moveRotationY;
-        private float turnProgress = 1f;
-        private float turnProgressY;
-        private bool isTurning = false;
-        private bool isTurningY = false;
-        
+        private Quaternion desiredRotation, desiredRotationY;
+        private Quaternion moveRotation, moveRotationY;
+        private float turnProgress = 1f, turnProgressY = 1f;
+        private bool isTurning = false, isTurningY = false;
 
         private void TurnInPlace()
         {
             float turnInput = _playerInput.x;
-            
-            if (spaced)
-            {
-                _playerInput.x = Mathf.Clamp(_playerInput.x, -1*turnInPlaceAngle, turnInPlaceAngle);
-            }
-            else
-            {
-                _playerInput.x = Mathf.Clamp(_playerInput.x, -90f, 90f);
-            }
-            
-            turnInput -= _playerInput.x; ///////
-            
-            
-            
-            
-            float sign = Mathf.Sign(_playerInput.x);
-            /////////if (Mathf.Abs(turnInput) > 60f) 
-            if (_playerInput.x>turnInPlaceAngle)
-            {
+            _playerInput.x = Mathf.Clamp(_playerInput.x, -90f, 90f);
+            turnInput -= _playerInput.x;
 
-               ///////// rb.AddRelativeTorque(0f,sign * Mathf.Abs(_playerInput.x-turnInput)/2 ,0f,ForceMode.Impulse);
-                
-                
-                ///////////
+            float sign = Mathf.Sign(_playerInput.x);
+            if (Mathf.Abs(_playerInput.x) > turnInPlaceAngle)
+            {
                 if (!isTurning)
                 {
                     turnProgress = 0f;
@@ -792,15 +717,56 @@ namespace Demo.Scripts.Runtime
                     animator.SetTrigger(sign > 0f ? TurnRight : TurnLeft);
                 }
                 
+                isTurning = true;
+            }
+
+            transform.rotation *= Quaternion.Euler(0f, turnInput, 0f);
+            
+            float lastProgress = turnCurve.Evaluate(turnProgress);
+            turnProgress += Time.deltaTime * turnSpeed;
+            turnProgress = Mathf.Min(turnProgress, 1f);
+            
+            float deltaProgress = turnCurve.Evaluate(turnProgress) - lastProgress;
+
+            _playerInput.x -= sign * turnInPlaceAngle * deltaProgress;
+            
+            transform.rotation *= Quaternion.Slerp(Quaternion.identity,
+                Quaternion.Euler(0f, sign * turnInPlaceAngle, 0f), deltaProgress);
+            
+            if (Mathf.Approximately(turnProgress, 1f) && isTurning)
+            {
+                isTurning = false;
+            }
+        }
+        
+        private void TurnInPlaceSpacedX()
+        {
+            float turnInput = _playerInput.x;
+            
+            _playerInput.x = Mathf.Clamp(_playerInput.x, -1*turnInPlaceAngle, turnInPlaceAngle);
+
+            turnInput -= _playerInput.x; ///////
+
+            float sign = Mathf.Sign(_playerInput.x);
+            
+            if (_playerInput.x>turnInPlaceAngle)
+            {
+                if (!isTurning)
+                {
+                    turnProgress = 0f;
+                    
+                    animator.ResetTrigger(TurnRight);
+                    animator.ResetTrigger(TurnLeft);
+                    
+                    animator.SetTrigger(sign > 0f ? TurnRight : TurnLeft);
+                }
                 isTurning = true; 
-                //////////////
             }
             
             transform.rotation *= Quaternion.Euler(0f, turnInput, 0f); /////////
-            if (physicsMovement)
-                rb.AddRelativeTorque(Vector3.up * turnInput * rb.mass/250,ForceMode.Impulse);
             
-            /////////////
+            rb.AddRelativeTorque(Vector3.up * turnInput * rb.mass/750,ForceMode.Impulse);
+            
             float lastProgress = turnCurve.Evaluate(turnProgress);
             turnProgress += Time.deltaTime * turnSpeed;
             turnProgress = Mathf.Min(turnProgress, 1f);
@@ -815,42 +781,29 @@ namespace Demo.Scripts.Runtime
             {
                 isTurning = false;
             }
-            ////////////////
+            
         }
-
-        private void TurnY()
+        
+        
+        private void TurnInPlaceSpacedY()
         {
-            if (!spaced)
-            {
-                _playerInput.y = Mathf.Clamp(_playerInput.y, -80f, 80f);
-                return;
-            }
+
             float turnInput = _playerInput.y;
             _playerInput.y = Mathf.Clamp(_playerInput.y, -1*turnInPlaceAngleY, turnInPlaceAngle);
-            turnInput -= _playerInput.y;///////////
+            turnInput -= _playerInput.y;
 
             float sign = Mathf.Sign(_playerInput.y);
-           // if (Mathf.Abs(turnInput) > 45f) //_playerInput.y>turnInPlaceAngle
             if (_playerInput.y>turnInPlaceAngleY)
             {
-               /////////////////// rb.AddRelativeTorque(sign * Mathf.Abs(_playerInput.y*turnInput)/1200,0f ,0f,ForceMode.Impulse);
-                //////////
                 if (!isTurningY)
                 {
                     turnProgressY = 0f;
                 }
-                
                 isTurningY = true;
-                ////////////////
             }
 
-           /////////////////
-            //transform.rotation *= turnYConsiderRotation.localRotation;
-            //transform.rotation *= Quaternion.Euler(0f, turnInput, 0f); /////////
-
             transform.rotation *= Quaternion.Euler(turnInput, 0f, 0f);
-            if (physicsMovement)
-                rb.AddRelativeTorque(Vector3.right * turnInput * rb.mass/250,ForceMode.Impulse);
+            rb.AddRelativeTorque(Vector3.right * turnInput * rb.mass/750,ForceMode.Impulse);
             
             float lastProgress = turnCurve.Evaluate(turnProgressY);
             turnProgressY += Time.deltaTime * turnSpeed;
@@ -862,305 +815,228 @@ namespace Demo.Scripts.Runtime
             
             transform.rotation *= Quaternion.Slerp(Quaternion.identity, Quaternion.Euler(sign * turnInPlaceAngleY, 0f, 0f), deltaProgress);
             
-            
             if (Mathf.Approximately(turnProgressY, 1f) && isTurningY)
             {
                 isTurningY = false;
             }
-            
-            /////////////////////
-            
-            
         }
-        
+
+
 
         private float _jumpState = 0f;
-        
+
         private void UpdateLookInput()
         {
-            
-    
-          //  _freeLook = Input.GetKey(KeyCode.X);
-
             float deltaMouseX = Input.GetAxis("Mouse X") * sensitivity;
             float deltaMouseY = -Input.GetAxis("Mouse Y") * sensitivity;
-
-            /*
-            if (_freeLook)
-            {
-                // No input for both controller and animation component. We only want to rotate the camera
-
-                _freeLookInput.x += deltaMouseX;
-                _freeLookInput.y += deltaMouseY;
-
-                _freeLookInput.x = Mathf.Clamp(_freeLookInput.x, -freeLookAngle.x, freeLookAngle.x);
-                _freeLookInput.y = Mathf.Clamp(_freeLookInput.y, -freeLookAngle.y, freeLookAngle.y);
-
-                return;
-            }
-
-            _freeLookInput = FPSAnimLib.ExpDecay(_freeLookInput, Vector2.zero, 15f, Time.deltaTime); */
             
             _playerInput.x += deltaMouseX;
             _playerInput.y += deltaMouseY;
+            
+            float proneWeight = animator.GetFloat("ProneWeight");
+            Vector2 pitchClamp = Vector2.Lerp(new Vector2(-90f, 90f), new Vector2(-30, 0f), proneWeight);
+            
+            _playerInput.y = Mathf.Clamp(_playerInput.y, pitchClamp.x, pitchClamp.y);
+            
 
-            /*
-            if (spaced)
+            if (!spaced)
             {
-                _playerInput.y = Mathf.Clamp(_playerInput.y, -30f, 30f);
+                moveRotation *= Quaternion.Euler(0f, deltaMouseX, 0f);
+                TurnInPlace();
                 
+                float moveWeight = Mathf.Clamp01(movementComponent.AnimatorVelocity.magnitude);
+                transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, moveWeight);
+                transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, _jumpState);
+                _playerInput.x *= 1f - moveWeight;
+                _playerInput.x *= 1f - _jumpState;
+                
+                _jumpState = Mathf.Lerp(_jumpState, movementComponent.IsInAir() ? 1f : 0f,
+                    FPSAnimLib.ExpDecayAlpha(10f, Time.deltaTime));
             }
             else
             {
-                _playerInput.y = Mathf.Clamp(_playerInput.y, -90f, 90f);
-            } */
-
-            moveRotation *= Quaternion.Euler(deltaMouseY, deltaMouseX, 0f);
-            TurnInPlace();
-            TurnY();
-
-           // _jumpState = FPSAnimLib.ExpDecay(_jumpState, _isInAir ? 1f : 0f, 10f, Time.deltaTime);
-           if (!spaced)
-           {
-            float moveWeight = Mathf.Clamp01(Mathf.Abs(_smoothMove.magnitude));
-            
-                transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, moveWeight);
-                transform.rotation = Quaternion.Slerp(transform.rotation, moveRotation, _jumpState);
-            
-            
-
-            _playerInput.x *= 1f - moveWeight;
-            _playerInput.x *= 1f - _jumpState;
-           }
+                moveRotation *= Quaternion.Euler(deltaMouseY, deltaMouseX, 0f);
+                TurnInPlaceSpacedX();
+                TurnInPlaceSpacedY();
+            }
             
             charAnimData.SetAimInput(_playerInput);
             charAnimData.AddDeltaInput(new Vector2(deltaMouseX, charAnimData.deltaAimInput.y));
         }
-        
-        private void UpdateFiring()
+
+        private Quaternion lastRotation;
+
+        private void OnDrawGizmos()
         {
-            ch.SetSize(minSize,reduceTime);
-            if (recoilComponent == null) return;
-            
-            if (recoilComponent.fireMode != FireMode.Semi && _fireTimer >= 60f / GetGun().fireRate)
+            if (weaponBone != null)
             {
-                Fire();
-
-                if (recoilComponent.fireMode == FireMode.Burst)
-                {
-                    _bursts--;
-
-                    if (_bursts == 0)
-                    {
-                        _fireTimer = -1f;
-                        OnFireReleased();
-                    }
-                    else
-                    {
-                        _fireTimer = 0f;
-                    }
-                }
-                else
-                {
-                    _fireTimer = 0f;
-                }
-            }
-
-            if (_fireTimer >= 0f)
-            {
-                _fireTimer += Time.deltaTime;
+                Gizmos.DrawWireSphere(weaponBone.position, 0.03f);
             }
         }
 
-        private bool IsZero(float value)
+        private Vector2 _cameraRecoilOffset;
+
+        private void UpdateRecoil()
         {
-            return Mathf.Approximately(0f, value);
-        }
-
-        private float verticalVelocity = 0f;
-        private float smoothIsMoving = 0f;
-
-        private void UpdateMovementSpaced()
-        {
-            float moveX = spacedMovement.Fsm.GetFsmVector3("strafeVector").Value.normalized.x;
-            float moveY = spacedMovement.Fsm.GetFsmVector3("strafeVector").Value.normalized.z;
-
-            verticalVelocity = spacedMovement.Fsm.GetFsmFloat("moveUP").Value +
-                               spacedMovement.Fsm.GetFsmFloat("moveDOWN").Value;
-            verticalVelocity = Mathf.Clamp(verticalVelocity, -1f, 1f);
-            
-            moveX *= 1f - verticalVelocity;
-            moveY *= 1f - verticalVelocity;
-            
-            Vector2 rawInput = new Vector2(moveX, moveY);
-            Vector2 normInput = new Vector2(moveX, moveY);
-            normInput.Normalize();
-
-            _smoothMove = FPSAnimLib.ExpDecay(_smoothMove, normInput, moveSmoothing, Time.deltaTime);
-
-            moveX = _smoothMove.x;
-            moveY = _smoothMove.y;
-            
-            charAnimData.moveInput = normInput;
-            charAnimData.upDownInput = verticalVelocity;
-
-            _smoothAnimatorMove.x = FPSAnimLib.ExpDecay(_smoothAnimatorMove.x, rawInput.x, 5f, Time.deltaTime);
-            _smoothAnimatorMove.y = FPSAnimLib.ExpDecay(_smoothAnimatorMove.y, rawInput.y, 4f, Time.deltaTime);
-            
-            bool idle = Mathf.Approximately(0f, normInput.magnitude);
-            animator.SetBool(Moving, !idle);
-            
-            smoothIsMoving = FPSAnimLib.ExpDecay(smoothIsMoving, idle ? 0f : 1f, curveLocomotionSmoothing, 
-                Time.deltaTime);
-            
-            animator.SetFloat(Velocity, Mathf.Clamp01(smoothIsMoving));
-            animator.SetFloat(MoveX, _smoothAnimatorMove.x);
-            animator.SetFloat(MoveY, _smoothAnimatorMove.y);
-
-
-            
-        }
-
-        private void UpdateMovement()
-        {
-            if (spaced)
+            if (Mathf.Approximately(_controllerRecoil.magnitude, 0f)
+                && Mathf.Approximately(_cameraRecoilOffset.magnitude, 0f))
             {
-                UpdateMovementSpaced();
                 return;
             }
+            
+            float smoothing = 8f;
+            float restoreSpeed = 8f;
+            float cameraWeight = 0f;
 
-            
-            float moveX = Input.GetAxisRaw("Horizontal");
-            
-            float moveY = Input.GetAxisRaw("Vertical");
-            
-
-            charAnimData.moveInput = new Vector2(moveX, moveY);
-
-            moveX *= 1f - _jumpState;
-            moveY *= 1f - _jumpState;
-            
-
-            Vector2 rawInput = new Vector2(moveX, moveY);
-            Vector2 normInput = new Vector2(moveX, moveY);
-            normInput.Normalize();
-            
-            if ((IsZero(normInput.y) || !IsZero(normInput.x)) 
-                && movementState == FPSMovementState.Sprinting)
+            if (GetGun().recoilPattern != null)
             {
-                SprintReleased();
+                smoothing = GetGun().recoilPattern.smoothing;
+                restoreSpeed = GetGun().recoilPattern.cameraRestoreSpeed;
+                cameraWeight = GetGun().recoilPattern.cameraWeight;
             }
             
-            if (movementState == FPSMovementState.Sprinting)
-            {
-                normInput.x = rawInput.x = 0f;
-                normInput.y = rawInput.y = 2f;
-            }
+            _controllerRecoil = Vector2.Lerp(_controllerRecoil, Vector2.zero,
+                FPSAnimLib.ExpDecayAlpha(smoothing, Time.deltaTime));
 
-            _smoothMove = FPSAnimLib.ExpDecay(_smoothMove, normInput, moveSmoothing, Time.deltaTime);
-
-            moveX = _smoothMove.x;
-            moveY = _smoothMove.y;
+            _playerInput += _controllerRecoil * Time.deltaTime;
             
-            charAnimData.moveInput = normInput;
+            Vector2 clamp = Vector2.Lerp(Vector2.zero, new Vector2(90f, 90f), cameraWeight);
+            _cameraRecoilOffset -= _controllerRecoil * Time.deltaTime;
+            _cameraRecoilOffset = Vector2.ClampMagnitude(_cameraRecoilOffset, clamp.magnitude);
 
-            _smoothAnimatorMove.x = FPSAnimLib.ExpDecay(_smoothAnimatorMove.x, rawInput.x, 5f, Time.deltaTime);
-            _smoothAnimatorMove.y = FPSAnimLib.ExpDecay(_smoothAnimatorMove.y, rawInput.y, 4f, Time.deltaTime);
-            
-            bool idle = Mathf.Approximately(0f, normInput.magnitude);
-            animator.SetBool(Moving, !idle);
-            
-            smoothIsMoving = FPSAnimLib.ExpDecay(smoothIsMoving, idle ? 0f : 1f, curveLocomotionSmoothing, 
-                Time.deltaTime);
-            
-            animator.SetFloat(Velocity, Mathf.Clamp01(smoothIsMoving));
-            animator.SetFloat(MoveX, _smoothAnimatorMove.x);
-            animator.SetFloat(MoveY, _smoothAnimatorMove.y);
-            
-            Vector3 move = transform.right * moveX + transform.forward * moveY;
+            if (_isFiring) return;
 
-            if (_isInAir)
-            {
-                verticalVelocity -= gravity * Time.deltaTime;
-                verticalVelocity = Mathf.Max(-30f, verticalVelocity);
-            }
-            
-            move.y = verticalVelocity;
-            controller.Move(move * speed * Time.deltaTime);
-
-            bool bWasInAir = _isInAir;
-            _isInAir = !controller.isGrounded;
-            animator.SetBool(InAir, _isInAir);
-
-            if (!_isInAir)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    verticalVelocity = jumpHeight;
-                }
-            }
-
-            if (bWasInAir != _isInAir)
-            {
-                if (_isInAir)
-                {
-                    SprintReleased();
-                }
-                else
-                {
-                    verticalVelocity = -0.5f;
-                }
-
-                slotLayer.PlayMotion(_isInAir ? onJumpMotionAsset : onLandedMotionAsset);
-            }
-            
+            _cameraRecoilOffset = Vector2.Lerp(_cameraRecoilOffset, Vector2.zero,
+                FPSAnimLib.ExpDecayAlpha(restoreSpeed, Time.deltaTime));
         }
 
-        System.Collections.IEnumerator Cooldown(RectTransform rt, float time)
-        {
-            Vector2 initSize = new Vector2(rt.sizeDelta.x, 0f);
-            Vector2 targetSize = new Vector2(rt.sizeDelta.x, 100f);
-
-            while (rt.sizeDelta.y < 100f)
-            {
-                Vector2 smoothedSize = Vector2.Lerp(initSize, targetSize, time);
-                GetComponent<RectTransform>().sizeDelta = smoothedSize;
-            }
-
-            if (rt.sizeDelta.y >= 100f) yield return null;
-        }
         private void Update()
         {
+            Time.timeScale = timeScale;
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit(0);
             }
-
-            if (!disableInput)
-            {
-                UpdateActionInput();
-                UpdateLookInput();
-                UpdateFiring();
-                UpdateMovement();
-            }
             
+            UpdateActionInput();
+            UpdateLookInput();
+            UpdateRecoil();
+
+            charAnimData.moveInput = movementComponent.AnimatorVelocity;
+            //todo: add recoil here to the input
             UpdateAnimController();
         }
-
-        private Quaternion _smoothBodyCam;
-
+        
         public void UpdateCameraRotation()
         {
-            Vector2 finalInput = new Vector2(_playerInput.x, _playerInput.y);
-            (Quaternion, Vector3) cameraTransform =
-                (transform.rotation * Quaternion.Euler(finalInput.y, finalInput.x, 0f),
-                    firstPersonCamera.position);
+            Vector2 input = _playerInput;
+            input += _cameraRecoilOffset;
             
+            (Quaternion, Vector3) cameraTransform =
+                (transform.rotation * Quaternion.Euler(input.y, input.x, 0f),
+                    firstPersonCamera.position);
 
             cameraHolder.rotation = cameraTransform.Item1;
             cameraHolder.position = cameraTransform.Item2;
 
             mainCamera.rotation = cameraHolder.rotation * Quaternion.Euler(_freeLookInput.y, _freeLookInput.x, 0f);
         }
+        
+
+
+        /// ////////////////////////////////////////////////////////
+
+        private void SetupGravityState(bool isThereAnyGravity)
+        {
+            spaced = !isThereAnyGravity;
+            rb.isKinematic = isThereAnyGravity;
+            movementComponent.SetupGravityState(isThereAnyGravity);
+
+            lookLayer.leanAmount = spaced ? 0 : 40;
+            turnInPlaceAngle = spaced ? 30 : 85;
+
+        }
+
+        public void SwapGravityState()
+        {
+            Debug.Log("Aboba");
+            SetupGravityState(spaced);
+        }
+        
+        ///////////////////////////////////////////////////////////
+        public void ShootPressed(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            { 
+                OnFirePressed();
+            }
+            else
+            {
+                OnFireReleased();
+            }
+            
+        }
+        
+        public void JetpackPressed(InputAction.CallbackContext context)
+        {
+            if (spaced) return;
+            if (context.performed)
+            { 
+                OnSprintStarted();
+            }
+            else
+            {
+                OnSprintEnded();
+            }
+            
+        }
+
+        public void ReloadPressed(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                TryReload();
+            }
+            
+        }
+        
+        public void GrenadePressed(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                TryGrenadeThrow();
+            }
+            
+        }
+        
+        public void HealthpackPressed(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                //TO DO
+            }
+            
+        }
+
+        public void SwapWeaponPressed(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                ChangeWeapon_Internal();
+            }
+        }
+
+        /// <summary>
+        /// Used in FSM
+        /// </summary>
+        /// <returns></returns>
+
+        public GameObject GetCamera()
+        {
+            return mainCamera.gameObject;
+        }
+        
+        
+        
     }
 }

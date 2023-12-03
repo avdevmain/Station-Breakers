@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: GrenadeThrow
   m_EditorClassIdentifier: 
   clip: {fileID: -203655887218126122, guid: 3c2c686759b9f314d86b93e126ff520d, type: 3}
+  spineRotation: {x: 0, y: 0, z: 0, w: 1}
   mask: {fileID: 0}
   blendTime:
     blendInTime: 0.15
     blendOutTime: 0.15
+    rateScale: 1
   curves:
   - name: Overlay
     curve:

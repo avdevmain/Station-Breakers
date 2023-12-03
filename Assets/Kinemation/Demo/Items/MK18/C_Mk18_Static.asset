@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: C_Mk18_Static
   m_EditorClassIdentifier: 
   clip: {fileID: 7400000, guid: a87b00a9e1b1fae4aa563388034a78c1, type: 2}
+  mask: {fileID: 0}
   spineRotation: {x: 0, y: 0, z: 0, w: 1}
-  mask: {fileID: 31900000, guid: 572701504aa6c17498da75bfc9ecc1ea, type: 2}
+  overrideMask: {fileID: 0}
+  isAdditive: 0
+  overridePose: {fileID: 0}
   blendTime:
-    blendInTime: 0.15
-    blendOutTime: 0.15
+    blendInTime: 0.2
+    blendOutTime: 0
+    rateScale: 1
   curves: []

@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Demo.Scripts.Runtime
+namespace Kinemation.Demo.Scripts.Runtime
 {
     public class ScreenshotMaker : MonoBehaviour
     {

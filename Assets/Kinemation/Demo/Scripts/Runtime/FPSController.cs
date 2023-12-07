@@ -351,6 +351,7 @@ namespace Kinemation.Demo.Scripts.Runtime
             shootLayer.projectile_damage = gun.damage;
             shootLayer.projectile_hor_disp = gun.projectile_hor_disp;
             shootLayer.projectile_ver_disp = gun.projectile_ver_disp;
+            shootLayer.projectile_damage = gun.damage;
         }
         private void EnableUnarmedState()
         {

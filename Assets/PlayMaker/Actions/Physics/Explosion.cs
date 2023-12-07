@@ -1,5 +1,7 @@
 // (c) Copyright HutongGames, LLC 2010-2013. All rights reserved.
 
+using System.Collections.Generic;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace HutongGames.PlayMaker.Actions
@@ -8,6 +10,15 @@ namespace HutongGames.PlayMaker.Actions
 	[Tooltip("Applies an explosion Force to all Game Objects with a Rigid Body inside a Radius.")]
 	public class Explosion : FsmStateAction
 	{
+		
+		[RequiredField]
+		[UIHint(UIHint.Variable)] 
+		[Tooltip("The Array to sort.")] 
+		public FsmArray array;
+
+		[RequiredField] [Tooltip("If should the object be visible to apply force to it")]
+		public FsmBool visibilityRequired;
+		
 		[RequiredField]
 		[Tooltip("The world position of the center of the explosion.")]
         public FsmVector3 center;
@@ -26,16 +37,14 @@ namespace HutongGames.PlayMaker.Actions
         [Tooltip("The type of force to apply.")]
 		public ForceMode forceMode;
 
-        //Removed
-        [System.NonSerialized]
 		[UIHint(UIHint.Layer)]
-		public FsmInt layer;
-		
-        [UIHint(UIHint.Layer)]
         [Tooltip("Layers to effect.")]
 		public FsmInt[] layerMask;
 		
-        [Tooltip("Invert the mask, so you effect all layers except those defined above.")]
+		
+		private FsmInt[] visibilityLayerMask;
+
+		[Tooltip("Invert the mask, so you effect all layers except those defined above.")]
 		public FsmBool invertMask;
 		
         [Tooltip("Repeat every frame while the state is active.")]
@@ -54,8 +63,17 @@ namespace HutongGames.PlayMaker.Actions
             Fsm.HandleFixedUpdate = true;
         }
 
+
+
+        private List<GameObject> list;
 		public override void OnEnter()
 		{
+			visibilityLayerMask = new FsmInt[layerMask.Length+1];
+			visibilityLayerMask[0] = 0;
+			layerMask.CopyTo(visibilityLayerMask,1);
+			
+			
+			list = new List<GameObject>();
 			DoExplosion();
 			
 			if (!everyFrame)
@@ -72,15 +90,27 @@ namespace HutongGames.PlayMaker.Actions
 		void DoExplosion()
 		{
 			var colliders = Physics.OverlapSphere(center.Value, radius.Value);
-			
+			RaycastHit hitInfo;
 			foreach (var hit in colliders)
 			{
 			    var rigidBody = hit.gameObject.GetComponent<Rigidbody>();
                 if (rigidBody != null && ShouldApplyForce(hit.gameObject))
 				{
+					if (visibilityRequired.Value)
+					{
+						Physics.Raycast(center.Value, hit.ClosestPointOnBounds(center.Value) - center.Value,
+							out hitInfo, radius.Value,
+							ActionHelpers.LayerArrayToLayerMask(visibilityLayerMask, invertMask.Value));
+						if (hitInfo.collider==null) continue;
+						if (hitInfo.collider.gameObject != hit.gameObject) continue;
+							
+					}
+					list.Add(hit.gameObject);
                     rigidBody.AddExplosionForce(force.Value, center.Value, radius.Value, upwardsModifier.Value, forceMode);
 				}
 			}
+
+			array.Values = list.ToArray();
 		}
 		
 		bool ShouldApplyForce(GameObject go)

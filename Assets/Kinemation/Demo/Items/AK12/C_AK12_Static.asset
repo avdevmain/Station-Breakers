@@ -13,13 +13,10 @@ MonoBehaviour:
   m_Name: C_AK12_Static
   m_EditorClassIdentifier: 
   clip: {fileID: 7400000, guid: 85d2a60476fe0c14eb5fb236f50052e7, type: 2}
-  mask: {fileID: 0}
   spineRotation: {x: 0, y: 0, z: 0, w: 1}
-  overrideMask: {fileID: 0}
-  isAdditive: 0
-  overridePose: {fileID: 7400000, guid: 76b46d6158e9d33409f549110878a545, type: 2}
+  mask: {fileID: 0}
   blendTime:
-    blendInTime: 0.2
+    blendInTime: 0.06
     blendOutTime: 0
     rateScale: 1
   curves: []

@@ -3,47 +3,7 @@ guid: 1853ac8dcdf577c4db68fc9a0f939c1d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: bullet
-    second: {fileID: 2100000, guid: b6297c2d57657d146aa89fd96a3006f2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: finish
-    second: {fileID: 2100000, guid: 016190cac3b97064e89672c8c7a44f09, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: finish_milled
-    second: {fileID: 2100000, guid: 062a39ccaaab9cc4badca15636b66a79, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: follower_indicator
-    second: {fileID: 2100000, guid: a332110174793c645a6703da7a537066, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polymer mag
-    second: {fileID: 2100000, guid: e08275b675d65e541a0d249fba5df411, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: polymer_furniture
-    second: {fileID: 2100000, guid: 4bb897df037b0d146a397ae27453d08a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: primer
-    second: {fileID: 2100000, guid: a81a456bc4a7afb4b8847fd9e383128d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: steel
-    second: {fileID: 2100000, guid: 25af04b2973d7b142afc3644be598a58, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

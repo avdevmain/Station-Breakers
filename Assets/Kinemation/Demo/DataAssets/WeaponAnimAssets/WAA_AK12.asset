@@ -13,12 +13,6 @@ MonoBehaviour:
   m_Name: WAA_AK12
   m_EditorClassIdentifier: 
   rotationOffset: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
-  aimOffsetTable: {fileID: 11400000, guid: 7058601491d8f444287872b2f8c05086, type: 2}
-  recoilData: {fileID: 11400000, guid: b0d912a5cd6b9864c87bd779c079da50, type: 2}
-  overlayPose: {fileID: 11400000, guid: e42b96ce4fc27c542ba5b4be9bfe87ef, type: 2}
-  weaponBone:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
   adsData:
     cameraData: {fileID: 11400000, guid: b654eede1a140da469e3545ffaaa3754, type: 2}
     adsTranslationBlend:
@@ -30,14 +24,14 @@ MonoBehaviour:
       y: 0.09
       z: 0.148
     pointAimOffset:
-      position: {x: -0.03, y: 0, z: 0.02}
-      rotation: {x: 0.0044270228, y: 0.016430076, z: 0.26012978, w: 0.96542376}
+      position: {x: -0.03, y: 0, z: 0}
+      rotation: {x: 0.0026619053, y: 0.016806621, z: 0.15641183, w: 0.9875454}
     aimSpeed: 3.4
     changeSightSpeed: 2
     pointAimSpeed: 3
   viewOffset:
-    position: {x: -0.02, y: 0.05, z: -0.035}
-    rotation: {x: 0, y: 0, z: 0.026176952, w: -0.99965733}
+    position: {x: -0.05, y: 0.07, z: 0.03}
+    rotation: {x: 0, y: 0, z: 0.032195758, w: 0.99948156}
   springData:
     loc:
       x:
@@ -80,9 +74,9 @@ MonoBehaviour:
         maxValue: 2
       scale: {x: 20, y: 20, z: 35}
   freeAimData:
-    scalar: 0.1
-    maxValue: 5
-    speed: 9
+    scalar: 0
+    maxValue: 0
+    speed: 0
   moveSwayData:
     maxMoveLocSway: {x: 0.02, y: -0.01, z: 0.03}
     maxMoveRotSway: {x: 1, y: 2, z: -15}
@@ -129,14 +123,9 @@ MonoBehaviour:
     locSpeed: {x: 4, y: 4, z: 13}
     rotSpeed: {x: 7, y: 10, z: 11}
   blockData:
-    weaponLength: 0.5
-    startOffset: 0
-    threshold: 0.15
+    weaponLength: 0.93
+    startOffset: 0.37
+    threshold: 0.1
     restPose:
       position: {x: -0.05, y: -0.09, z: -0.03}
       rotation: {x: -0.22627231, y: 0.18844119, z: -0.091121025, w: -0.9513084}
-  adsRecoilOffset: {x: 0, y: 0.04, z: -0.05}
-  adsSwayOffset: {x: 0, y: 0, z: 0}
-  rightHandOffset:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}

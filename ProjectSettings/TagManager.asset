@@ -6,8 +6,8 @@ TagManager:
   tags:
   - grabbable
   - interactable
+  - grab+interact
   - Missile
-  - lootable
   layers:
   - Default
   - TransparentFX

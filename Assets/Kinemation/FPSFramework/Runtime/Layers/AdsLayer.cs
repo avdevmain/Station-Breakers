@@ -1,6 +1,5 @@
 // Designed by KINEMATION, 2023
 
-using Kinemation.FPSFramework.Runtime.Attributes;
 using Kinemation.FPSFramework.Runtime.Core.Components;
 using Kinemation.FPSFramework.Runtime.Core.Types;
 using UnityEngine;
@@ -10,9 +9,17 @@ namespace Kinemation.FPSFramework.Runtime.Layers
     public class AdsLayer : AnimLayer
     {
         [Header("SightsAligner")] [SerializeField]
-        private EaseMode adsEaseMode = new EaseMode(EEaseFunc.Sine);
+        private EaseMode adsEaseMode = new EaseMode(new[]
+        {
+            new Keyframe(0f, 0f),
+            new Keyframe(1f, 0f)
+        });
 
-        [SerializeField] private EaseMode pointAimEaseMode = new EaseMode(EEaseFunc.Sine);
+        [SerializeField] private EaseMode pointAimEaseMode = new EaseMode(new[]
+        {
+            new Keyframe(0f, 0f),
+            new Keyframe(1f, 0f)
+        });
         
         [SerializeField] [Bone] protected bool usePivotAdjustment = false;
         [SerializeField] [Bone] protected Transform aimTarget;
@@ -60,16 +67,21 @@ namespace Kinemation.FPSFramework.Runtime.Layers
 
         public override void OnAnimUpdate()
         {
-            if (GetGunAsset() == null) return;
-            
             Vector3 baseLoc = GetMasterPivot().position;
             Quaternion baseRot = GetMasterPivot().rotation;
 
             ApplyCrouchPose();
             ApplyPointAiming();
+
+            if (usePivotAdjustment)
+            {
+                var aimPoint = GetPivotPoint().InverseTransformPoint(GetAimPoint().position);
+                aimPoint.z = 0f;
+                core.ikRigData.adsPivotOffset = Vector3.Lerp(Vector3.zero, aimPoint, adsWeight);
+            }
+            
             ApplyAiming();
             
-            core.ikRigData.aimWeight = adsWeight;
             Vector3 postLoc = GetMasterPivot().position;
             Quaternion postRot = GetMasterPivot().rotation;
 
@@ -146,8 +158,6 @@ namespace Kinemation.FPSFramework.Runtime.Layers
             LocRot defaultPose = new LocRot(GetMasterPivot());
             ApplyHandsOffset();
             LocRot basePose = new LocRot(GetMasterPivot());
-
-            if (GetAimPoint() == null) return;
             
             GetMasterPivot().position = defaultPose.position;
             GetMasterPivot().rotation = defaultPose.rotation;

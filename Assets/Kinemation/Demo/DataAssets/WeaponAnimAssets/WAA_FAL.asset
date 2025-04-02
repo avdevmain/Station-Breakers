@@ -13,12 +13,6 @@ MonoBehaviour:
   m_Name: WAA_FAL
   m_EditorClassIdentifier: 
   rotationOffset: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  aimOffsetTable: {fileID: 11400000, guid: 7058601491d8f444287872b2f8c05086, type: 2}
-  recoilData: {fileID: 11400000, guid: 0720a1377eae4234b89eb7e573924ff2, type: 2}
-  overlayPose: {fileID: 11400000, guid: 8c0d7792c49f03149aafe53329941c5a, type: 2}
-  weaponBone:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
   adsData:
     cameraData: {fileID: 11400000, guid: b654eede1a140da469e3545ffaaa3754, type: 2}
     adsTranslationBlend:
@@ -36,7 +30,7 @@ MonoBehaviour:
     changeSightSpeed: 7
     pointAimSpeed: 3
   viewOffset:
-    position: {x: 0.03, y: 0.04, z: 0}
+    position: {x: 0.02, y: 0.04, z: 0.05}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   springData:
     loc:
@@ -80,9 +74,9 @@ MonoBehaviour:
         maxValue: 2
       scale: {x: 35, y: 30, z: 45}
   freeAimData:
-    scalar: 0.1
-    maxValue: 3
-    speed: 6
+    scalar: 0
+    maxValue: 0
+    speed: 0
   moveSwayData:
     maxMoveLocSway: {x: 0.02, y: -0.01, z: 0.03}
     maxMoveRotSway: {x: 1, y: 2, z: -15}
@@ -135,8 +129,3 @@ MonoBehaviour:
     restPose:
       position: {x: -0.05, y: -0.09, z: -0.03}
       rotation: {x: -0.22627231, y: 0.18844119, z: -0.091121025, w: -0.9513084}
-  adsRecoilOffset: {x: 0, y: 0.04, z: -0.04}
-  adsSwayOffset: {x: 0, y: 0.04, z: 0.1}
-  rightHandOffset:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}

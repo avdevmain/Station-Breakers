@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: C_FAL_RockEmote
   m_EditorClassIdentifier: 
   clip: {fileID: 7400000, guid: a46251c50df016a4eb180c553b5aa140, type: 2}
-  isAdditive: 1
   spineRotation: {x: 0, y: 0, z: 0, w: 1}
   mask: {fileID: 31900000, guid: 572701504aa6c17498da75bfc9ecc1ea, type: 2}
-  overrideMask: {fileID: 31900000, guid: 0b68b37e3b9c89c4a9b80e851052c8d1, type: 2}
   blendTime:
     blendInTime: 0.15
     blendOutTime: 0.15
@@ -34,24 +32,40 @@ MonoBehaviour:
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.33333334
+        outWeight: 0
       - serializedVersion: 3
-        time: 0.60107166
+        time: 1
         value: 1
         inSlope: 0
         outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.73809814
-        value: 0
-        inSlope: -7.297859
-        outSlope: -7.297859
         tangentMode: 34
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+  - name: WeaponBone
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

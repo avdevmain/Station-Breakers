@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimOffsetUp:
   - boneIndex: 0
-    angle: {x: 4, y: 7}
+    angle: {x: 4, y: 5}
   - boneIndex: 1
-    angle: {x: 8, y: 16.6}
+    angle: {x: 5, y: 17}
   - boneIndex: 2
-    angle: {x: 8, y: 16.6}
+    angle: {x: 7, y: 17}
   - boneIndex: 3
-    angle: {x: 12, y: 16.6}
+    angle: {x: 10, y: 17}
   - boneIndex: 4
-    angle: {x: 29, y: 16.6}
+    angle: {x: 54, y: 17}
   - boneIndex: 5
-    angle: {x: 29, y: 16.6}
+    angle: {x: 10, y: 17}
   - boneIndex: 10
     angle: {x: 36.2, y: 38.6}
   aimOffsetRight:

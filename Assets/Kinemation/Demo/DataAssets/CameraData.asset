@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b4d9355962bf0428281385320643d9, type: 3}
   m_Name: CameraData
   m_EditorClassIdentifier: 
-  baseFOV: 100
-  aimFOV: 80
+  baseFOV: 90
+  aimFOV: 70
   fovCurve:
     serializedVersion: 2
     m_Curve:
@@ -39,4 +39,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   aimSpeed: 10
-  extraSmoothing: 10
+  extraSmoothing: 500

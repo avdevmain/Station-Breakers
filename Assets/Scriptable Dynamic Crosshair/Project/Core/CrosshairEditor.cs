@@ -27,7 +27,7 @@ namespace Obscure.SDC {
         {
             VisualElement root = new VisualElement();
 
-            uXML = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scriptable Dynamic Crosshair/Project/Core/Crosshair/Crosshair.uxml");
+            uXML = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Obscure045/Scriptable Dynamic Crosshair/Project/Core/Crosshair/Crosshair.uxml");
 
             // Adding the UI Document
             if (uXML == null)

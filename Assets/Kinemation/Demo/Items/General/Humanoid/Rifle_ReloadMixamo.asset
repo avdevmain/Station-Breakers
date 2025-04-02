@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: Rifle_ReloadMixamo
   m_EditorClassIdentifier: 
   clip: {fileID: -203655887218126122, guid: 0e13cebe15da92d4fbac99e7995f1679, type: 3}
-  spineRotation: {x: 0, y: 0, z: 0, w: 1}
   mask: {fileID: 0}
   blendTime:
     blendInTime: 0.15
     blendOutTime: 0.15
-    rateScale: 1
   curves:
   - name: MaskLeftHand
     curve:

@@ -40,7 +40,3 @@ MonoBehaviour:
   - target gone
   - collided
   - updateColor
-  - RMB reset
-  - SwapGravityState
-  - loot
-  - damage

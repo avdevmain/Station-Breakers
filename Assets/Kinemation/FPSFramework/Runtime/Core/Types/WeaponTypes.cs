@@ -1,7 +1,5 @@
 // Designed by KINEMATION, 2023
 
-using Kinemation.FPSFramework.Runtime.Camera;
-
 using System;
 using UnityEngine;
 

@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: C_AK12_ReloadEmpty
   m_EditorClassIdentifier: 
   clip: {fileID: 7400000, guid: ba0c14a4ebc186548b843193194449fd, type: 2}
-  mask: {fileID: 31900000, guid: 572701504aa6c17498da75bfc9ecc1ea, type: 2}
   spineRotation: {x: 0, y: 0, z: 0, w: 1}
-  overrideMask: {fileID: 0}
-  isAdditive: 0
+  mask: {fileID: 0}
   blendTime:
     blendInTime: 0.2
     blendOutTime: 0.1
@@ -227,7 +225,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 34

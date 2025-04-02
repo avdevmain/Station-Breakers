@@ -9,8 +9,8 @@ namespace Obscure.SDC {
         [SerializeField] Camera mainCamera;
 
         [SerializeField] int range = 100;
-        [SerializeField] Vector2 minSize = new Vector2(87, 87);
-        [SerializeField] Vector2 maxSize = new Vector2(300, 300);
+        [SerializeField] Vector2 minSize = new Vector2(20, 20);
+        [SerializeField] Vector2 maxSize = new Vector2(200, 200);
 
         [SerializeField] GameObject targetedObject;
 
@@ -42,7 +42,7 @@ namespace Obscure.SDC {
             Vector2 smoothedSize = Vector2.Lerp(initialSize, size, time);
             GetComponent<RectTransform>().sizeDelta = smoothedSize;
         }
-        
+
         public void SetSizeNoSmooth(Vector2 size)
         {
             if (size.x > maxSize.x || size.y > maxSize.y)

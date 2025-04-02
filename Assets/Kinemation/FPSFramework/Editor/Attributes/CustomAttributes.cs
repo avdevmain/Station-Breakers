@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Kinemation.FPSFramework.Runtime.Attributes;
 using Kinemation.FPSFramework.Runtime.Core.Components;
 using UnityEditor;
 using UnityEngine;
@@ -236,17 +235,6 @@ namespace Kinemation.FPSFramework.Editor.Attributes
             {
                 property.stringValue = useAnimator ? string.Empty : CurveLib.AnimCurveNames[0];
             }
-        }
-    }
-    
-    [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-    public class ReadOnlyDrawer : PropertyDrawer
-    {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            GUI.enabled = false; // Disable editing
-            EditorGUI.PropertyField(position, property, label, true);
-            GUI.enabled = true; // Enable editing for other properties
         }
     }
 }

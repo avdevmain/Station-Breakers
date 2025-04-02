@@ -47,8 +47,8 @@ namespace Kinemation.FPSFramework.Runtime.Layers
             float d_y = Random.Range(-1f * projectile_ver_disp, projectile_ver_disp);
             
             go.GetComponent<Rigidbody>().AddRelativeForce(d_x,d_y,projectile_speed, ForceMode.Impulse);
-            PlayMakerFSM.FindFsmOnGameObject(go, "Bullet").FsmVariables.GetFsmFloat("damage_base").Value = projectile_damage;
             
+            //Set damage value to bullet
         }
     }
 }
